@@ -1,6 +1,8 @@
 import { commands } from "./instances"
 import { addNotif } from "./notifications";
 
+export var commandPrefix = "!";
+
 export abstract class Command {
     constructor(public name: string) {
 
@@ -9,9 +11,18 @@ export abstract class Command {
     abstract input(...args: string[]): void;
 }
 
+export class NoArgCommand extends Command {
+    constructor() {
+        super("");
+    }
+    input(...args: string[]): void {
+        args;
+    }
+}
+ 
 export class HelpCommand extends Command {
     constructor() {
-        super("help")
+        super("help");
     }
 
     input(...args: string[]): void {
@@ -20,5 +31,4 @@ export class HelpCommand extends Command {
             addNotif(command.name);
         });
     }
-    
 }

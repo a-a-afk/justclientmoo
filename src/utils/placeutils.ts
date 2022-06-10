@@ -22,7 +22,7 @@ export function healUp() {
     //assume cookie 40
     //60 / 40 = 3/2, heal
     //scrap, just do check if less
-    for(let i = healBuff; i < (100 - player.health); i += healBuff) {
+    for(let i = healBuff; i <= (100 - player.health); i += healBuff) {
         heal();
     }
 }

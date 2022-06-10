@@ -2,12 +2,13 @@ import { MooMooAPI } from "@mathrandom7910/moomooapi";
 import { api, moduleManager } from "./instances";
 import { NotificationModule } from "./modules/modules/client/notificationmodule";
 import { createDiv, createPElem } from "./utils/elementutils";
+import { formatString, windowBlurred } from "./utils/miscutils";
 
 var notifs: HTMLDivElement[] = [];
 
 export function addNotif(notifName: string, isError = false) {
     const div = createDiv("notifDiv");
-    const textElem = createPElem(notifName);
+    const textElem = createPElem(formatString(notifName));
 
     div.append(textElem);
 
@@ -41,4 +42,10 @@ function refreshNotifs() {
         div.style.bottom = i + "px";
         i += div.clientHeight + 10;
     }
+}
+
+export function desktopNotif(msg: string) {
+    if(Notification.permission != "denied" || !windowBlurred) return;
+
+    return new Notification(msg);
 }

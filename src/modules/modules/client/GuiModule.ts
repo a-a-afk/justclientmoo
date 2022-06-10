@@ -4,7 +4,7 @@ import { storageDat } from "../../../storage";
 import { createDiv, createElement, createInput, makeDraggable } from "../../../utils/elementutils";
 import { keyMap } from "../../../utils/miscutils";
 import { Category, Module } from "../../module";
-import { BindSetting, BoolSetting, HatSetting, NumSetting } from "../../settings";
+import { BindSetting, BoolSetting, EnumSetting, HatSetting, NumSetting } from "../../settings";
 
 const guiHolder = createDiv("guiHolder");
 const moduleDiv = createDiv("modGuiHolder");
@@ -69,7 +69,7 @@ export class GuiModule extends Module {
 
             if(setting instanceof BoolSetting) {
                 const settingElm = createInput("checkbox", "settingContent");
-                settingDiv.appendChild(settingElm);
+                
                 settingElm.checked = setting.val;
 
                 settingElm.oninput = () => {
@@ -80,6 +80,9 @@ export class GuiModule extends Module {
                         } else module.disable();
                     }
                 }
+                const settingElmHolder = createDiv("settingContent");
+                settingElmHolder.appendChild(settingElm);
+                settingDiv.appendChild(settingElmHolder);
             } else if(setting instanceof BindSetting) {
                 const settingElm = createElement("button", "settingContent");
                 settingElm.textContent = getBindSettingStr(setting);
@@ -94,7 +97,9 @@ export class GuiModule extends Module {
                         settingElm.textContent = getBindSettingStr(setting);
                     }
                 }
-                settingDiv.appendChild(settingElm);
+                const settingElmHolder = createDiv("settingContent");
+                settingElmHolder.appendChild(settingElm);
+                settingDiv.appendChild(settingElmHolder);
             } else if (setting instanceof NumSetting) {
                 const settingElm = createInput("range", "settingContent");
                 settingElm.min = setting.minVal.toString();
@@ -109,10 +114,12 @@ export class GuiModule extends Module {
                 //settingElm.setAttribute("type", "range");
                // settingElm.setAttribute("min", setting.minVal + "");
                // settingElm.setAttribute("max", setting.maxVal + "");
-               settingDiv.appendChild(settingElm);
+               const settingElmHolder = createDiv("settingContent");
+               settingElmHolder.appendChild(settingElm);
+               settingDiv.appendChild(settingElmHolder);
             } else if(setting instanceof HatSetting) {
                 const settingElm = createElement("select");
-                for(let i in HatIds) {
+                for(const i in HatIds) {
                     if(isNaN(parseInt(i))) continue;
                     const optionElm = createElement("option");
                     optionElm.value = i;
@@ -123,7 +130,26 @@ export class GuiModule extends Module {
                 settingElm.oninput = () => {
                     setting.set(settingElm.value);
                 }
-                settingDiv.appendChild(settingElm);
+                const settingElmHolder = createDiv("settingContent");
+                settingElmHolder.appendChild(settingElm);
+                settingDiv.appendChild(settingElmHolder);
+            } else if(setting instanceof EnumSetting) {
+                const settingElm = createElement("select");
+                for(const i in setting.rawEnum) {
+                    if(isNaN(parseInt(i))) continue;
+                    const optionElm = createElement("option");
+                    optionElm.value = i;
+                    optionElm.text = setting.rawEnum[i];
+                    settingElm.appendChild(optionElm);
+                }
+
+                settingElm.value = setting.val.toString();
+                settingElm.oninput = () => {
+                    setting.set(settingElm.value);
+                }
+                const settingElmHolder = createDiv("settingContent");
+                settingElmHolder.appendChild(settingElm);
+                settingDiv.appendChild(settingElmHolder);
             }
 
             

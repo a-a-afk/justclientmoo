@@ -40,27 +40,27 @@ export class Module {
     }
 
     info(notif: string) {
-        addNotif(notif);
+        addNotif(`[${this.name}] ${notif}`);
     }
 
     error(notif: string) {
-        addNotif(notif, true);
+        addNotif(`[${this.name}] ${notif}`, true);
     }
 
     enable() {
-        this.onEnable();
         this.enabled.set(true);
         //console.log("enabled", this.name);
-        if(this.showNotifs.val) this.info(this.name + " enabled");
+        if(this.showNotifs.val) this.info("enabled");
         this.guiElement?.classList?.add("moduleEnabled");
+        this.onEnable();
     }
 
     disable() {
-        this.onDisable();
         this.enabled.set(false);
         //console.log("disabled", this.name);
-        if(this.showNotifs.val) this.info(this.name + " disabled");
-        this.guiElement?.classList?.remove("moduleEnabled")
+        if(this.showNotifs.val) this.info("disabled");
+        this.guiElement?.classList?.remove("moduleEnabled");
+        this.onDisable();
     }
 
     addSetting<K extends Setting<any>>(setting: K) {
@@ -141,7 +141,7 @@ export class Module {
     }
 }
 
-class NoArgMod extends Module {
+export class NoArgMod extends Module {
     constructor() {
         super("", Category.MISC);
     }

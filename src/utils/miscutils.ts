@@ -1,3 +1,5 @@
+import { commandPrefix } from "../command";
+
 export function getTime() {
     return Date.now();
 }
@@ -269,5 +271,18 @@ export var keyMap = [
     "PA1", // [253]
     "WIN_OEM_CLEAR", // [254]
     "" // [255]
-  ];
+];
 
+export function formatString(str: string) {
+      return str.replaceAll("%PREFIX%", commandPrefix);
+}
+
+export var windowBlurred = false;
+
+addEventListener("blur", () => {
+    windowBlurred = true;
+});
+
+addEventListener("focus", () => {
+    windowBlurred = false;
+});

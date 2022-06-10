@@ -9,6 +9,14 @@ export class DebugModule extends Module {
         this.addNum("num setting", 5, 1, 10, "num setting defaulting to 5 with a minimum of 1 and max of 10");
         this.addBind("bind setting", "a bind setting with no defaults");
         this.addHat("hat setting", HatIds.SHAME, "hat setting defaulting to the shame hat");
+
+        enum AnEnum{
+            ENUMVAL1,
+            ENUMVAL2,
+            ENUMVAL3
+        }
+
+        this.addEnum("enum setting", AnEnum.ENUMVAL1, AnEnum, "an enum setting");
         //add enums
 
         /*if(this.logPackets.val) {

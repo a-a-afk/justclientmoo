@@ -13,12 +13,19 @@ export class ClownNotify extends Module {
 
         this.on("updatePlayer", (e) => {
             if(this.onlySelf.val && e.sid != player.sid) return;
+            
             const isClown = e.hat == HatIds.SHAME;
+            if(!isClown && clownMap[e.sid] == undefined) {
+                clownMap[e.sid] = false;
+                return;
+            }
 
             if(clownMap[e.sid] != isClown) {
                 clownMap[e.sid] = isClown;
 
-                addNotif(api.getPlayerBySid(e.sid) + (isClown ? "" : " no longer") + " has clown");
+                const player = api.getPlayerBySid(e.sid);
+                if(player == null) return;
+                addNotif(player.name + (isClown ? "" : " no longer") + " has clown");
             }
 
         });

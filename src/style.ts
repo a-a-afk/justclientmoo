@@ -77,7 +77,7 @@ export function initStyle() {
   }
   
   .settingContent {
-    display: block;
+    display: inline-block;
     width: fit-content;
   }
   

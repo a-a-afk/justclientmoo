@@ -1,7 +1,6 @@
 import { Repeater } from "@mathrandom7910/moomooapi/src/misc";
 import { addRepeater, api, player } from "../../../instances";
 import { mouseDir } from "../../../utils/elementutils";
-import { getFoodType } from "../../../utils/itemutils";
 import { Category, Module } from "../../module";
 
 class PlacementModule extends Module {
@@ -45,7 +44,7 @@ export class TrapPlacer extends PlacementModule {
 
 export class FoodPlacer extends PlacementModule {
     constructor(){
-        super("food", getFoodType);
+        super("food", player.getFoodType);
         this.setDefaultBind(81);
     }
 }

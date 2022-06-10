@@ -30,7 +30,6 @@ export var mouseDir: number;
 
 canvas.addEventListener("mousemove", (e) => {
     mouseDir = Math.atan2(e.clientY - canvas.height / 2, e.clientX - canvas.width / 2);
-    console.log(mouseDir);
 });
 
 /*var mouseX = 0,

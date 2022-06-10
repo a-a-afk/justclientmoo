@@ -27,6 +27,8 @@ export class RainbowHat extends Module {
                 if(tick >= this.tickInterval.val) {
                     tick = 0;
                     hat(hats[hatIndex]);
+                    hatIndex++;
+                    if(hatIndex >= hats.length) hatIndex = 0;
                 }
             }
         });

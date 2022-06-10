@@ -1,9 +1,10 @@
 import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
 import { S2CPacketType } from "@mathrandom7910/moomooapi/src/packets";
-import { api, player } from "../../../instances";
+import { api, moduleManager, player } from "../../../instances";
 import { acc, attackingGear, hat, primary, secondary } from "../../../utils/player";
 import { Category, Module } from "../../module";
+import { AutoAim } from "./AutoAim";
 
 function attackMain() {
     attackingGear();
@@ -24,6 +25,8 @@ function beforeDisable() {
 }
 
 var counter = 0;
+const autoAimModule = moduleManager.getModule("autoaim") as AutoAim;
+var wasAutoaimDis = false;
 
 export class InstaModule extends Module {
     tickMode = this.addBool("tick", true, "attempts to sync attacks with the server to make the \"perfect\" insta");
@@ -32,10 +35,14 @@ export class InstaModule extends Module {
 
     constructor() {
         super("insta", Category.COMBAT, "insta kill noobs");
-
+        
 
         this.on("packetReceive", (e) => {
             if(e.type != S2CPacketType.UPDAE_PLAYERS) return;
+            if(player.getSecondaryType() == null) {
+                this.disable();
+                return;
+            }
 
             counter++;
 
@@ -52,6 +59,11 @@ export class InstaModule extends Module {
 
     onEnable(): void {
         counter = 0;
+
+        if(!autoAimModule.enabled.val) {
+            autoAimModule.enable();
+            wasAutoaimDis = true;
+        }
 
         if(player.getSecondaryType() == null) {
             this.disable();
@@ -70,6 +82,12 @@ export class InstaModule extends Module {
                 }, this.delaySec.val);
             }, this.delaySec.val);
             
+        }
+    }
+
+    onDisable(): void {
+        if(wasAutoaimDis) {
+            autoAimModule.disable();
         }
     }
 }

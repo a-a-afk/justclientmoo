@@ -1,10 +1,12 @@
 import { MooMooAPI } from "@mathrandom7910/moomooapi";
 import { Repeater } from "@mathrandom7910/moomooapi/src/misc";
 import { C2SPacketType } from "@mathrandom7910/moomooapi/src/packets";
-import { Command } from "./command";
-import { ModuleManager } from "./modules/module";
+import { Player } from "@mathrandom7910/moomooapi/src/player";
+import { Command, commandPrefix, NoArgCommand } from "./command";
+import { ModuleManager, NoArgMod } from "./modules/module";
 import { getBindSettingStr, GuiModule } from "./modules/modules/client/GuiModule";
 import { addNotif } from "./notifications";
+import { getDistance } from "@mathrandom7910/mathplus"
 
 export var api = new MooMooAPI();
 export var moduleManager = new ModuleManager();
@@ -57,14 +59,14 @@ document.addEventListener("keyup", e => {
 
 export var commands: Command[] = [];
 
-export function addCommand(command: Command) {
-    commands.push(command);
+export function addCommand(command: typeof NoArgCommand) {
+    commands.push(new command());
 }
 
 api.on("packetSend", (e) => {
     if(e.type == C2SPacketType.CHAT) {
         const message = e.payload[0] as string;
-        if(message.startsWith("!")) {
+        if(message.startsWith(commandPrefix)) {
             e.isCanceled = true;
 
             const args = message.split(" ");
@@ -82,3 +84,26 @@ api.on("packetSend", (e) => {
         }
     }
 });
+
+export var nearestPlayer: Player | null = null;
+export var nearestPlayerDist = -1;
+
+api.on("serverTick", (e) => {
+    nearestPlayer = null;
+
+
+    for(const playerDat of e.playerData) {
+        if(playerDat.sid == player.sid) continue;
+
+        const foundPlayer = api.getPlayerBySid(playerDat.sid) as Player;
+        if(nearestPlayer == null || getDistance(player.getAsPos(), foundPlayer.getAsPos()) < nearestPlayerDist) {
+            nearestPlayer = foundPlayer;
+            nearestPlayerDist = getDistance(player.getAsPos(), foundPlayer.getAsPos());
+        }
+    
+    }
+});
+
+export function addMod(mod: typeof NoArgMod) {
+    moduleManager.addMod(mod);
+}
