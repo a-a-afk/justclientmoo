@@ -3,17 +3,23 @@ import { addCommand, addMod, moduleManager } from "./instances";
 import { ClientModule } from "./modules/modules/client/clientmodule";
 import { GuiModule } from "./modules/modules/client/GuiModule";
 import { NotificationModule } from "./modules/modules/client/notificationmodule";
+import { AntiTrap } from "./modules/modules/combat/antitrap";
 import { AutoAim } from "./modules/modules/combat/AutoAim";
 import { AutoHeal } from "./modules/modules/combat/AutoHeal";
 import { ClownNotify } from "./modules/modules/combat/clownnotify";
 import { InstaModule } from "./modules/modules/combat/InstaModule";
+import { TrapNuker } from "./modules/modules/combat/TrapNuker";
 import { VisualRange } from "./modules/modules/combat/VisualRange";
 import { RainbowHat } from "./modules/modules/gear/rainbowhat";
+import { AutoEz } from "./modules/modules/chat/autoezmodule";
 import { DebugModule } from "./modules/modules/misc/debugmodule";
 import { PacketLogger } from "./modules/modules/misc/packetlogger";
 import { FoodPlacer, MillPlacer, SpecialPlacer, SpikePlacer, TrapPlacer } from "./modules/modules/placement/placement";
+import { Nuker } from "./modules/modules/world/nukermodule";
 import { initStorage } from "./storage";
 import { initStyle } from "./style";
+import { CurseBypass } from "./modules/modules/chat/cursebypass";
+import { ChatMirror } from "./modules/modules/chat/chatmirror";
 
 console.log("jusclient init...");
 
@@ -34,6 +40,13 @@ addMod(RainbowHat);
 addMod(PacketLogger)
 addMod(VisualRange);
 addMod(AutoAim);
+addMod(AntiTrap);
+addMod(Nuker);
+addMod(TrapNuker);
+addMod(AutoEz);
+addMod(CurseBypass);
+addMod(ChatMirror);
+// addMod(AntiTrap);
 moduleManager.init();
 initStorage();
 initStyle();

@@ -1,13 +1,12 @@
-import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
 import { moduleManager } from "../../../instances";
 import { storageDat } from "../../../storage";
 import { createDiv, createElement, createInput, makeDraggable } from "../../../utils/elementutils";
-import { keyMap } from "../../../utils/miscutils";
 import { Category, Module } from "../../module";
-import { BindSetting, BoolSetting, EnumSetting, HatSetting, NumSetting } from "../../settings";
+import { BindSetting, BoolSetting, EnumSetting, NumSetting, StringSetting } from "../../settings";
 
 const guiHolder = createDiv("guiHolder");
-const moduleDiv = createDiv("modGuiHolder");
+const moduleDiv = createDiv("invisHolder");
+
 var modGui: HTMLDivElement | null;
 var currentModGui: string | null = null;
 
@@ -15,7 +14,7 @@ guiHolder.appendChild(moduleDiv);
 const categoryDivs = new Map<Category, HTMLDivElement>();
 
 export function getBindSettingStr(setting: BindSetting) {
-    return `BIND: ${(setting.val != 0) ? (keyMap[setting.val] || "UNKOWN") : "NONE"}`;
+    return `BIND: ${setting.val}`;
 }
 
 export class GuiModule extends Module {
@@ -27,10 +26,10 @@ export class GuiModule extends Module {
     constructor() {
         super("gui", Category.CLIENT, "the gui");
         
-        this.setDefaultBind(27);
+        this.setDefaultBind("Escape");
 
         document.addEventListener("keydown", (e) => {
-            if(e.keyCode == 27 && this.enabled.val && this.closeOnEscape.val && this.bind.val != 27) {
+            if(e.keyCode == 27 && this.enabled.val && this.closeOnEscape.val && this.bind.val != "Escape") {
                 this.disable();
             }
         });
@@ -50,7 +49,7 @@ export class GuiModule extends Module {
     }
 
     generateModuleGui(module: Module) {
-        const guiDiv = createDiv("moduleGui");
+        const guiDiv = createDiv("dispGui");
         const nameDiv = createDiv("settingDiv");
         const borderStr = "rgba(1, 26, 54, 0.89)";
 
@@ -66,7 +65,7 @@ export class GuiModule extends Module {
             settingName.textContent = setting.name;
 
             settingDiv.appendChild(settingName);
-
+            const settingElmHolder = createDiv("settingContent");
             if(setting instanceof BoolSetting) {
                 const settingElm = createInput("checkbox", "settingContent");
                 
@@ -80,9 +79,9 @@ export class GuiModule extends Module {
                         } else module.disable();
                     }
                 }
-                const settingElmHolder = createDiv("settingContent");
+                // const settingElmHolder = createDiv("settingContent");
                 settingElmHolder.appendChild(settingElm);
-                settingDiv.appendChild(settingElmHolder);
+                // settingDiv.appendChild(settingElmHolder);
             } else if(setting instanceof BindSetting) {
                 const settingElm = createElement("button", "settingContent");
                 settingElm.textContent = getBindSettingStr(setting);
@@ -91,15 +90,15 @@ export class GuiModule extends Module {
                     if(GuiModule.bindingSetting != setting) {
                         GuiModule.bindingSetting = setting;
                         GuiModule.bindingSettingElm = settingElm;
-                        settingElm.textContent = "BIND: BINDING"
+                        settingElm.textContent = "BIND: BINDING";
                     } else {
                         GuiModule.bindingSetting = null;
                         settingElm.textContent = getBindSettingStr(setting);
                     }
                 }
-                const settingElmHolder = createDiv("settingContent");
+                // const settingElmHolder = createDiv("settingContent");
                 settingElmHolder.appendChild(settingElm);
-                settingDiv.appendChild(settingElmHolder);
+                // settingDiv.appendChild(settingElmHolder);
             } else if (setting instanceof NumSetting) {
                 const settingElm = createInput("range", "settingContent");
                 settingElm.min = setting.minVal.toString();
@@ -114,10 +113,10 @@ export class GuiModule extends Module {
                 //settingElm.setAttribute("type", "range");
                // settingElm.setAttribute("min", setting.minVal + "");
                // settingElm.setAttribute("max", setting.maxVal + "");
-               const settingElmHolder = createDiv("settingContent");
+            //    const settingElmHolder = createDiv("settingContent");
                settingElmHolder.appendChild(settingElm);
-               settingDiv.appendChild(settingElmHolder);
-            } else if(setting instanceof HatSetting) {
+            //    settingDiv.appendChild(settingElmHolder);
+            } /*else if(setting instanceof HatSetting) {
                 const settingElm = createElement("select");
                 for(const i in HatIds) {
                     if(isNaN(parseInt(i))) continue;
@@ -133,7 +132,7 @@ export class GuiModule extends Module {
                 const settingElmHolder = createDiv("settingContent");
                 settingElmHolder.appendChild(settingElm);
                 settingDiv.appendChild(settingElmHolder);
-            } else if(setting instanceof EnumSetting) {
+            }*/ else if(setting instanceof EnumSetting) {
                 const settingElm = createElement("select");
                 for(const i in setting.rawEnum) {
                     if(isNaN(parseInt(i))) continue;
@@ -147,13 +146,26 @@ export class GuiModule extends Module {
                 settingElm.oninput = () => {
                     setting.set(settingElm.value);
                 }
-                const settingElmHolder = createDiv("settingContent");
+                // const settingElmHolder = createDiv("settingContent");
                 settingElmHolder.appendChild(settingElm);
-                settingDiv.appendChild(settingElmHolder);
+                // settingDiv.appendChild(settingElmHolder);
+            } else if(setting instanceof StringSetting) {
+                const settingElm = createInput("text", "settingContent");
+                settingElm.value = setting.val;
+                var oldVal = setting.val;        
+                settingElm.oninput = () => {
+                    if(!setting.set(settingElm.value)) {
+                        settingElm.value = oldVal;
+                    } else {
+                        oldVal = setting.val;
+                    }
+                }
+
+                settingElmHolder.appendChild(settingElm);
             }
 
             
-
+            settingDiv.appendChild(settingElmHolder);
             guiDiv.appendChild(settingDiv);
         }
 

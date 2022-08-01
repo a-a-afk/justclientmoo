@@ -2,7 +2,7 @@ import { MooMooAPI } from "@mathrandom7910/moomooapi";
 import { api, moduleManager } from "./instances";
 import { NotificationModule } from "./modules/modules/client/notificationmodule";
 import { createDiv, createPElem } from "./utils/elementutils";
-import { formatString, windowBlurred } from "./utils/miscutils";
+import { formatString, isBlurred } from "./utils/miscutils";
 
 var notifs: HTMLDivElement[] = [];
 
@@ -45,7 +45,7 @@ function refreshNotifs() {
 }
 
 export function desktopNotif(msg: string) {
-    if(Notification.permission != "denied" || !windowBlurred) return;
+    if(Notification.permission != "denied" || !isBlurred) return;
 
     return new Notification(msg);
 }

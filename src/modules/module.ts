@@ -1,16 +1,18 @@
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
 import { PlayerEvents } from "@mathrandom7910/moomooapi/src/events";
-import { api } from "../instances";
+import { api, IJustEvents, justEvents } from "../instances";
 import { addNotif } from "../notifications";
 import { ModuleData, saveModuleSettings } from "../storage";
-import { BindSetting, BoolSetting, EnumSetting, HatSetting, NumSetting, Setting } from "./settings";
+import { BindSetting, BoolSetting, Buildings, BuildingSetting, EnumSetting, HatSetting, NumSetting, Setting, StringSetting } from "./settings";
 
 export enum Category {
     COMBAT,
     MISC,
     CLIENT,
     PLACEMENT,
-    GEAR
+    GEAR,
+    WORLD,
+    CHAT
 }
 
 export class Module {
@@ -35,8 +37,9 @@ export class Module {
 
     }
 
-    setDefaultBind(bindKey: number) {
-        if(this.bind.val == 0) this.bind.set(bindKey);
+    setDefaultBind(bindKey: string) {
+        if(this.bind.val == "") this.bind.set(bindKey);
+        this.save();
     }
 
     info(notif: string) {
@@ -55,37 +58,45 @@ export class Module {
         this.onEnable();
     }
 
-    disable() {
+    disable(reason?: string) {
         this.enabled.set(false);
         //console.log("disabled", this.name);
-        if(this.showNotifs.val) this.info("disabled");
+        if(this.showNotifs.val) this.info("disabled" + (reason ? " " + reason : ""));
         this.guiElement?.classList?.remove("moduleEnabled");
         this.onDisable();
     }
 
-    addSetting<K extends Setting<any>>(setting: K) {
+    addSetting<K extends Setting<any>>(setting: K): K {
         this.settings.push(setting);
         return setting;
     }
 
     addNum(name: string, defaultVal: number, minVal: number, maxVal: number, desc = "") {
-        return this.addSetting(new NumSetting(name, defaultVal, minVal, maxVal, this, desc)) as NumSetting;
+        return this.addSetting(new NumSetting(name, defaultVal, minVal, maxVal, this, desc));
     }
 
     addBool(name: string, defaultVal: boolean, desc = "") {
-        return this.addSetting(new BoolSetting(name, defaultVal, this, desc)) as BoolSetting;
+        return this.addSetting(new BoolSetting(name, defaultVal, this, desc));
     }
 
-    addBind(name: string, desc = "", defaultBind = 0) {
-        return this.addSetting(new BindSetting(name, this, desc, defaultBind)) as BindSetting;
+    addBind(name: string, desc = "", defaultBind = "") {
+        return this.addSetting(new BindSetting(name, this, desc, defaultBind));
     }
 
     addEnum<T>(name: string, defaultVal: T, rawEnum: any, desc = "") {
-        return this.addSetting(new EnumSetting(name, defaultVal, rawEnum, this, desc)) as EnumSetting<T>;
+        return this.addSetting(new EnumSetting(name, defaultVal, rawEnum, this, desc));
     }
 
     addHat(name: string, defaultVal: HatIds, desc = "") {
-        return this.addSetting(new HatSetting(name, defaultVal, this, desc)) as HatSetting;
+        return this.addSetting(new HatSetting(name, defaultVal, this, desc));
+    }
+
+    addString(name: string, defaultVal = "", desc = "", minLen?: number, maxLen?: number) {
+        return this.addSetting(new StringSetting(name, defaultVal, this, desc, minLen, maxLen));
+    }
+
+    addBuild(name: string, defaultVal: Buildings, desc = "") {
+        return this.addSetting(new BuildingSetting(name, defaultVal, this, desc));
     }
 
     save() {
@@ -94,6 +105,13 @@ export class Module {
 
     on<K extends keyof PlayerEvents>(type: K, cb: (event: PlayerEvents[K]) => any) {
         api.on(type, (e) => {
+            if(!this.enabled.val) return;
+            cb(e);
+        });
+    }
+
+    onJust<K extends keyof IJustEvents>(type: K, cb: (event: IJustEvents[K]) => any) {
+        justEvents.on(type, (e) => {
             if(!this.enabled.val) return;
             cb(e);
         });
@@ -125,6 +143,10 @@ export class Module {
         return dat;
     }
 
+    /**
+     * Called after every module is added
+     */
+
     onPostInit() {
 
     }
@@ -152,6 +174,7 @@ export class ModuleManager {
     moduleMap: Map<typeof Module, Module> = new Map();
 
     addMod(moduleType: typeof NoArgMod) {
+        if(this.moduleMap.has(moduleType)) return;
         const modObj = new moduleType();
         this.moduleMap.set(moduleType, modObj);
         this.modules.push(modObj);

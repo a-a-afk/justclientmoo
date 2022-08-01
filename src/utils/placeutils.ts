@@ -26,3 +26,7 @@ export function healUp() {
         heal();
     }
 }
+
+export function healWithDelay() {
+    setTimeout(healUp, 125);
+}

@@ -1,16 +1,16 @@
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
-import { S2CPacketType } from "@mathrandom7910/moomooapi/src/packets";
+import { api } from "../../../instances";
 import { hat } from "../../../utils/player";
 import { Category, Module } from "../../module";
 
-const hats: number[] = [];
+const hats: HatIds[] = [];
 var hatIndex = 0;
 var tick = 0;
 
 for(let i in HatIds) {
-    const asInt = parseInt(i);
-    if(!isNaN(asInt)) {
-        hats.push(asInt);
+    const asNum = parseInt(i);
+    if(!isNaN(asNum)) {
+        hats.push(asNum);
     }
 }
 
@@ -20,17 +20,23 @@ export class RainbowHat extends Module {
     constructor() {
         super("rainbow", Category.GEAR, "cycles through hats");
 
-        this.on("packetReceive", (e) => {
-            if(e.type == S2CPacketType.UPDAE_PLAYERS) {
-                tick++;
+        this.on("serverTick", () => {
+            tick++;
 
-                if(tick >= this.tickInterval.val) {
-                    tick = 0;
-                    hat(hats[hatIndex]);
+            if(tick >= this.tickInterval.val) {
+                while(!api.hatsOwned[hats[hatIndex]]) {
                     hatIndex++;
                     if(hatIndex >= hats.length) hatIndex = 0;
                 }
+                tick = 0;
+                hat(hats[hatIndex]);
+                hatIndex++;
+                if(hatIndex >= hats.length) hatIndex = 0;
             }
         });
+    }
+
+    onDisable(): void {
+        hat(0);
     }
 }

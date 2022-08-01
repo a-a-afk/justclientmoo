@@ -1,6 +1,6 @@
 import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
-import { S2CPacketType } from "@mathrandom7910/moomooapi/src/packets";
+import { S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
 import { api, moduleManager, player } from "../../../instances";
 import { acc, attackingGear, hat, primary, secondary } from "../../../utils/player";
 import { Category, Module } from "../../module";
@@ -25,14 +25,11 @@ function beforeDisable() {
 }
 
 var counter = 0;
-const autoAimModule = moduleManager.getModule("autoaim") as AutoAim;
+var autoAimModule: AutoAim;
 var wasAutoaimDis = false;
 
 export class InstaModule extends Module {
-    tickMode = this.addBool("tick", true, "attempts to sync attacks with the server to make the \"perfect\" insta");
-
-    delaySec = this.addNum("firedealy", 120, 100, 250, "the time (in milliseconds) to wait after attacking with primary if tick is disabled");
-
+    
     constructor() {
         super("insta", Category.COMBAT, "insta kill noobs");
         
@@ -40,7 +37,7 @@ export class InstaModule extends Module {
         this.on("packetReceive", (e) => {
             if(e.type != S2CPacketType.UPDAE_PLAYERS) return;
             if(player.getSecondaryType() == null) {
-                this.disable();
+                this.disable("no secondary!");
                 return;
             }
 
@@ -55,6 +52,12 @@ export class InstaModule extends Module {
                 this.disable();
             }
         });
+
+        autoAimModule
+    }
+
+    onPostInit(): void {
+        autoAimModule = moduleManager.getModule("autoaim") as AutoAim;
     }
 
     onEnable(): void {
@@ -65,24 +68,10 @@ export class InstaModule extends Module {
             wasAutoaimDis = true;
         }
 
-        if(player.getSecondaryType() == null) {
-            this.disable();
-            return;
-        }
-
-        if(this.tickMode.val) {
-            
-        } else {
-            attackMain();
-            setTimeout(() => {
-                attackSecond();
-                setTimeout(() => {
-                    beforeDisable();
-                    this.disable();
-                }, this.delaySec.val);
-            }, this.delaySec.val);
-            
-        }
+        // if(player.getSecondaryType() == null) {
+        //     this.disable();
+        //     return;
+        // }        
     }
 
     onDisable(): void {

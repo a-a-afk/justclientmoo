@@ -1,4 +1,7 @@
+import { GameObject } from "@mathrandom7910/moomooapi/src/gameobject";
+import { Pos } from "@mathrandom7910/pos";
 import { commandPrefix } from "../command";
+import { api, exportObj } from "../instances";
 
 export function getTime() {
     return Date.now();
@@ -274,15 +277,20 @@ export var keyMap = [
 ];
 
 export function formatString(str: string) {
-      return str.replaceAll("%PREFIX%", commandPrefix);
+    const player = api.getPlayerBySid(exportObj.targetPlayer?.sid!)
+    return str.replaceAll("%PREFIX%", commandPrefix).replaceAll("%PLAYER%", player?.name || "No Player");
 }
 
-export var windowBlurred = false;
+export var isBlurred = false;
 
 addEventListener("blur", () => {
-    windowBlurred = true;
+    isBlurred = true;
 });
 
 addEventListener("focus", () => {
-    windowBlurred = false;
+    isBlurred = false;
 });
+
+export function buildingToPos(building: GameObject) {
+    return new Pos(building.x, building.y);
+}

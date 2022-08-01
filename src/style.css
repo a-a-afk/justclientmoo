@@ -43,7 +43,7 @@
   background-color: rgb(51, 84, 196);
 }
 
-.modGuiHolder {
+.invisHolder {
   display: grid;
   place-items: center;
   position: absolute;
@@ -51,13 +51,13 @@
   height: 100%;
 }
 
-.moduleGui {
+.dispGui {
   display: block;
-
   width: 45%;
   height: 45%;
   background-color: rgba(16, 58, 148, 0.637);
-  overflow: scroll;
+  overflow-y: scroll;
+  border-radius: 11px;
 }
 
 .settingDiv {
@@ -69,7 +69,7 @@
   margin-bottom: 4px;
   box-sizing: border-box;
   border-style: solid;
-  border-color: rgba(1, 26, 54, 0.89);
+  border-color: rgba(1, 26, 54, 0.26);
 }
 
 .settingContent {
@@ -83,4 +83,9 @@
 
 .errorDiv {
   background-color: rgba(116, 13, 13, 0.658);
+}
+
+.helpCmdDiv {
+  display: inline-block;
+  width: fit-content;
 }

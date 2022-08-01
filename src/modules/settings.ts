@@ -11,13 +11,14 @@ export abstract class Setting<T> {
 
     abstract parse(stringVal: string): T;
 
-    set(val: string | T) {
+    set(val: string | T): boolean {
         if(typeof val == "string") {
             this.val = this.parse(val);
         } else this.val = val;
         this.save();
         
         if(this.onSet) this.onSet();
+        return true;
     }
 
     save() {
@@ -50,13 +51,13 @@ export class BoolSetting extends Setting<boolean> {
     }
 }
 
-export class BindSetting extends Setting<number> {
-    constructor(name: string, module: Module, desc = "", defaultBind: number) {
+export class BindSetting extends Setting<string> {
+    constructor(name: string, module: Module, desc = "", defaultBind: string) {
         super(name, defaultBind, desc, module);
     }
 
-    parse(stringVal: string): number {
-        return parseInt(stringVal);
+    parse(stringVal: string): string {
+        return stringVal;
     }
 }
 
@@ -91,14 +92,38 @@ export class EnumSetting<T> extends Setting<T> {
     }
 }
 
-export class HatSetting extends Setting<HatIds> {
-
+export class HatSetting extends EnumSetting<HatIds> {
     constructor(name: string, defaultVal: HatIds, module: Module, desc = "") {
         super(name, defaultVal, desc, module);
     }
+}
 
-    parse(stringVal: string): HatIds {
-        return JSON.parse(stringVal);
+export class StringSetting extends Setting<string> {
+    constructor(name: string, defaultVal: string, module: Module, desc: string, public minLen?: number, public maxLen?: number) {
+        super(name, defaultVal, desc, module);
     }
-    
+
+    parse(stringVal: string): string {
+        return stringVal;
+    }
+
+    set(val: string): boolean {
+        if(this.maxLen && val.length > this.maxLen) return false;
+        if(this.minLen && val.length < this.minLen) return false;
+        return super.set(val); 
+    }
+}
+
+export enum Buildings {
+    SPIKE,
+    MILL,
+    TRAP,
+    TURRET,
+    WALL
+}
+
+export class BuildingSetting extends EnumSetting<Buildings> {
+    constructor(name: string, defaultVal: Buildings, module: Module, desc: string) {
+        super(name, defaultVal, Buildings, module, desc);
+    }
 }

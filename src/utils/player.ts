@@ -1,5 +1,7 @@
 import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
+import { C2SPacketType, S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
+import { Pos } from "@mathrandom7910/pos";
 import { api, player } from "../instances";
 
 export function hat(id: HatIds) {
@@ -26,4 +28,26 @@ export function secondary() {
     const type = player.getSecondaryType();
     if(type == null) return;
     api.setWeapon(type);
+}
+
+export function lookAt(pos: Pos) {
+    api.sendBasic(C2SPacketType.SET_ANGLE, player.getAsPos().dirTo(pos));
+}
+
+export var isAutoFire = false;
+
+api.on("packetReceive", (e)=> {
+    if(e.type == S2CPacketType.DEATH) {
+        isAutoFire = false;
+    }
+});
+
+api.on("packetSend", (e) => {
+    if(e.type == C2SPacketType.SET_ATTACK_STATE && e.payload[0]) {
+        isAutoFire = !isAutoFire;
+    }
+});
+
+export function toggleAuto() {
+    api.toggleAutoAttack();
 }

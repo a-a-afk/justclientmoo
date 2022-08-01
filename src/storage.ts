@@ -34,10 +34,14 @@ export interface StorageData {
 }
 
 export var storageDat = defaultDat;
-storageDat = getStorage();
+
+const storDat = getStorage();
+
+for(const key in storDat) {
+    (storageDat as any)[key] = (storDat as any)[key];
+}
 
 export function setStorage(val = storageDat) {
-   // storageDat = val;
     localStorage.setItem(clientKey, JSON.stringify(val));
 }
 

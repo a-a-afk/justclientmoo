@@ -1,82 +1,32 @@
-import { IPlayerDat } from "@mathrandom7910/moomooapi/src/player";
-import { api, moduleManager } from "../../../instances";
+import { api } from "../../../instances";
 import { desktopNotif } from "../../../notifications";
+import { isBlurred } from "../../../utils/miscutils";
 import { Category, Module } from "../../module";
 
 
 export class VisualRange extends Module {
     tabbedOutNotif = this.addBool("tabbedout", true, "pops up a desktop notification if you're tabbed out");
 
+    enter = this.addBool("enter", true, "notifies when a player enters visual range");
+    exit = this.addBool("exit", true, "notifies when a player exits visual range");
+
     constructor() {
         super("visualrange", Category.COMBAT, "notifies you if players come into/leave your view");
 
-        var prevPlayers: IPlayerDat[] = [];
+        this.onJust("playerEnterRange", (e) => {
+            if(!this.enter.val) return;
 
-        this.on("serverTick", (e) => {
-            if(e.playerData.length == prevPlayers.length) return;
-
-            if(e.playerData.length > prevPlayers.length) {//player comes into range, not in prev, in e.playerdata
-                var playerFound: IPlayerDat | null = null;
-
-                for(const player of e.playerData) {
-                    var didFindPlayer = false;
-                    for(const playerSearch of prevPlayers) {
-                        if(player.sid == playerSearch.sid) didFindPlayer = true;
-                    }
-
-                    if(!didFindPlayer) {
-                        playerFound = player;
-                        break;
-                    }
-                }
-                
-                if(playerFound) {
-                    const msg = api.getPlayerBySid(playerFound.sid)?.name + " has entered visual range";
-                    this.info(msg);
-                    if(this.tabbedOutNotif.val) desktopNotif(msg);
-                }
-            } else {
-
-                var playerFound: IPlayerDat | null = null;
-
-                for(const player of prevPlayers) {
-                    var didFindPlayer = false;
-                    for(const playerSearch of e.playerData) {
-                        if(player.sid == playerSearch.sid) didFindPlayer = true;
-                    }
-
-                    if(!didFindPlayer) {
-                        playerFound = player;
-                        break;
-                    }
-                }
-                
-                if(playerFound) {
-                    const msg = api.getPlayerBySid(playerFound.sid)?.name + " has exited visual range";
-                    this.info(msg);
-                    if(this.tabbedOutNotif.val) desktopNotif(msg)
-                }
-            }
-            
-
-            prevPlayers = e.playerData;
+            const notifStr = api.getPlayerBySid(e.sid)?.name + " has entered visual range";
+            this.info(notifStr);
+            if(this.tabbedOutNotif && isBlurred) desktopNotif(notifStr);
         });
 
-        this.tabbedOutNotif.onSet = () => {
-            if(!this.tabbedOutNotif.val) return;
-            if(Notification.permission == "denied") {
-                
-                Notification.requestPermission().then((val) => {
-                    if(val == "denied") {
-                        this.info("this setting needs notifications to be enabled");
-                        this.tabbedOutNotif.set(false);
-                        const guiModule = moduleManager.getModule("gui");
-                        if(guiModule?.enabled.val) {
-                            guiModule.disable();
-                        }
-                    }
-                });
-            }
-        }
+        this.onJust("playerExitRange", (e) => {
+            if(!this.exit.val) return;
+
+            const notifStr = api.getPlayerBySid(e.sid)?.name + " has exited visual range";
+            this.info(notifStr);
+            if(this.tabbedOutNotif && isBlurred) desktopNotif(notifStr);
+        });
     }
 }
