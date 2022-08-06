@@ -1,3 +1,4 @@
+import { toRad } from "@mathrandom7910/mathplus";
 import { Repeater } from "@mathrandom7910/moomooapi/src/misc";
 import { addRepeater, api, player } from "../../../instances";
 import { mouseDir } from "../../../utils/elementutils";
@@ -6,11 +7,13 @@ import { Category, Module } from "../../module";
 class PlacementModule extends Module {
     cbId: () => number | null;
     repeater: Repeater<string> | null = null;
+    triPlace = this.addBool("triplace", false, "will place 3 builds instead of 1");
+    triPlaceDir = this.addNum("triplaceadd", 90, 45, 120, "the amount (in degrees) to add to the placement")
     constructor(name: string, cbId: () => number | null) {
         super(name, Category.PLACEMENT, "placement settings");
         this.cbId = cbId.bind(player);
 
-        this.toggleOnRelease.set(true);
+        this.defaultToggle();
     }
 
     onPostInit(): void {
@@ -18,11 +21,16 @@ class PlacementModule extends Module {
             const id = this.cbId();
             if(id == null) return;
             api.placeItem(id, mouseDir);
+            if(this.triPlace.val) {
+                const dirAdd = toRad(this.triPlaceDir.val);
+                api.placeItem(id, mouseDir + dirAdd)
+                api.placeItem(id, mouseDir - dirAdd)
+            }
         }, 0, this.bind.val);
 
-        this.bind.onSet = () => {
-            (this.repeater!).code = this.bind.val;
-        }
+        this.bind.on("change", (v) => {
+            (this.repeater!).code = v;
+        })
 
         addRepeater(this.repeater);
     }

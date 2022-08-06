@@ -28,6 +28,6 @@ export class ChatMirror extends Module {
             if(this.copyPlayers.val == Copy.ENEMIES && plInd.tribe == player.tribe) return;
 
             api.chat(e.payload[1]);
-        });
+        }, this);
     }
 }

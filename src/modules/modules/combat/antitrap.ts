@@ -21,7 +21,8 @@ export class AntiTrap extends Module {
             if(e.sid != player.sid) return;
 
             isInTrap = false;
-            for(const building of api.gameObjects) {
+            for(const i in api.gameObjects) {
+                const building = api.gameObjects[i];
                 if(!building || building.buildType != ItemIds.PIT_TRAP || getDistance(player.getAsPos(), buildingToPos(building)) > 95) return;
                 
                 buildId = player.getSpikeType();

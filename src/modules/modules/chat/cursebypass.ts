@@ -10,18 +10,18 @@ export class CurseBypass extends Module {
         super("cursebypass", Category.CHAT, "bypasses the curse filter");
 
         onSendPack(C2SPacketType.CHAT, (e) => {
-            const msg: string = e.payload[0];
+            var msg: string = e.payload[0];
             var foundCurse = false;
             curseWords.forEach(curse => {
                 if(msg.indexOf(curse) != -1) {
                     foundCurse = true;
-                    msg.replaceAll(curse, `${curse[0].toUpperCase()}${curse.substring(1, curse.length)}`);
+                    msg = msg.replaceAll(curse, `${curse[0].toUpperCase()}${curse.substring(1, curse.length)}`);
                 }
             });
             if(foundCurse) {
                 e.isCanceled = true;
-                api.chat(msg);
+                api.sendHidden(C2SPacketType.CHAT, msg);
             }
-        });
+        }, this);
     }
 }

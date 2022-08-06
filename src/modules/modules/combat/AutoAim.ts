@@ -3,7 +3,7 @@ import { C2SPacketType } from "@mathrandom7910/moomooapi/src/data/network/packet
 import { api, nearestEnemy, player } from "../../../instances";
 import { Category, Module } from "../../module";
 
-var angleToEnemy = 0;
+export var angleToEnemy = 0;
 
 function setDir(dir: number) {
     api.sendBasic(C2SPacketType.SET_ANGLE, dir);

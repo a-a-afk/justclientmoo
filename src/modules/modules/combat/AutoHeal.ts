@@ -17,7 +17,7 @@ function healSmartDel() {
         if(getTime() - lastHealTime <= 125) {
             return healSmartDel();
         }
-
+        lastHealTime = getTime();
         healUp();
     }, 130);
 }
@@ -40,38 +40,37 @@ export class AutoHeal extends Module {
             isHeal = health > lastHealth;
 
             if(isHeal) {
-                lastHealTime = getTime();
-                const timeDif = lastHealTime - lastDmgTime;
-                if(timeDif <= 120) {
+                // lastHealTime = getTime();
+                // const timeDif = lastHealTime - lastDmgTime;
+                if(lastHealTime - lastDmgTime <= 120) {
                     shameChance++;
                 } else {
-                    shameChance--;
+                    shameChance -= 2;
                 }
             } else {
                 lastDmgTime = getTime();
             }
 
-            if(health != 100) {
-                var shouldInstaHeal = false;
-                
-                if(this.smartCheck.val && nearestEnemy && health <= 75) {
-                    if(this.smartCheckShame.val && shameChance > this.smartCheckShameVal.val) {
-                        healWithDelay();
-                        return;
-                    }
-                    if(health <= 55) shouldInstaHeal = true;
-
-                    if(this.antiAgeOne.val && health <= 65 && nearestEnemy.wep == WeaponIds.TOOL_HAMMER) {
-                        shouldInstaHeal = true;
-                        setTimeout(heal, 110);
-                    }
+            if(health >= 100) return;
+            var shouldInstaHeal = false;
+            
+            if(this.smartCheck.val && nearestEnemy && nearestEnemy.dist(player) <= 600 && health <= 75) {
+                if(this.smartCheckShame.val && shameChance > this.smartCheckShameVal.val) {
+                    healWithDelay();
+                    return;
                 }
+                if(health <= 55) shouldInstaHeal = true;
 
-                if(shouldInstaHeal) {
-                    healUp();
-                    //setTimeout(healUp, 250);
-                } else healSmartDel();
+                if(this.antiAgeOne.val && health <= 65 && nearestEnemy.wep == WeaponIds.TOOL_HAMMER) {
+                    shouldInstaHeal = true;
+                    setTimeout(heal, 110);
+                }
             }
+
+            if(shouldInstaHeal) {
+                healUp();
+                //setTimeout(healUp, 250);
+            } else healSmartDel();
         });
     }
 }

@@ -1,10 +1,9 @@
-import { moduleManager } from "../../../instances";
-import { storageDat } from "../../../storage";
-import { createDiv, createElement, createInput, makeDraggable } from "../../../utils/elementutils";
-import { Category, Module } from "../../module";
-import { BindSetting, BoolSetting, EnumSetting, NumSetting, StringSetting } from "../../settings";
+import { moduleManager } from "../../../../instances";
+import { storageDat } from "../../../../storage";
+import { createDiv, createElement, createInput, guiHolder, makeDraggable } from "../../../../utils/elementutils";
+import { Category, Module } from "../../../module";
+import { BindSetting, BoolSetting, ColorSetting, EnumSetting, NumSetting, StringSetting } from "../../../settings";
 
-const guiHolder = createDiv("guiHolder");
 const moduleDiv = createDiv("invisHolder");
 
 var modGui: HTMLDivElement | null;
@@ -48,7 +47,7 @@ export class GuiModule extends Module {
         }
     }
 
-    generateModuleGui(module: Module) {
+    renderGui(module: Module) {
         const guiDiv = createDiv("dispGui");
         const nameDiv = createDiv("settingDiv");
         const borderStr = "rgba(1, 26, 54, 0.89)";
@@ -60,6 +59,9 @@ export class GuiModule extends Module {
         for(const setting of module.settings) {
             const settingDiv = createDiv("settingDiv");
             settingDiv.style["border-color" as any] = borderStr;
+            // settingDiv.onmouseenter = () => {
+
+            // }
             settingDiv.title = setting.desc;
             const settingName = createDiv("settingContent");
             settingName.textContent = setting.name;
@@ -116,23 +118,7 @@ export class GuiModule extends Module {
             //    const settingElmHolder = createDiv("settingContent");
                settingElmHolder.appendChild(settingElm);
             //    settingDiv.appendChild(settingElmHolder);
-            } /*else if(setting instanceof HatSetting) {
-                const settingElm = createElement("select");
-                for(const i in HatIds) {
-                    if(isNaN(parseInt(i))) continue;
-                    const optionElm = createElement("option");
-                    optionElm.value = i;
-                    optionElm.text = HatIds[i];
-                    settingElm.appendChild(optionElm);
-                }
-                settingElm.value = setting.val.toString();
-                settingElm.oninput = () => {
-                    setting.set(settingElm.value);
-                }
-                const settingElmHolder = createDiv("settingContent");
-                settingElmHolder.appendChild(settingElm);
-                settingDiv.appendChild(settingElmHolder);
-            }*/ else if(setting instanceof EnumSetting) {
+            } else if(setting instanceof EnumSetting) {
                 const settingElm = createElement("select");
                 for(const i in setting.rawEnum) {
                     if(isNaN(parseInt(i))) continue;
@@ -159,6 +145,15 @@ export class GuiModule extends Module {
                     } else {
                         oldVal = setting.val;
                     }
+                }
+
+                settingElmHolder.appendChild(settingElm);
+            } else if(setting instanceof ColorSetting) {
+                const settingElm = createInput("color", "settingContent");
+                settingElm.value = setting.val;
+
+                settingElm.oninput = () => {
+                    setting.set(settingElm.value);
                 }
 
                 settingElmHolder.appendChild(settingElm);
@@ -215,7 +210,7 @@ export class GuiModule extends Module {
                     }
                 }
                 currentModGui = module.name;
-                modGui = this.generateModuleGui(module);
+                modGui = this.renderGui(module);
                 moduleDiv.appendChild(modGui);
                }
            });

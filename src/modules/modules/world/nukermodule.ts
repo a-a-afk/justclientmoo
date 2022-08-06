@@ -19,7 +19,8 @@ export class Nuker extends Module {
                 dist: null,
                 obj: null
             }
-            for(const obj of api.gameObjects) {
+            for(const i in api.gameObjects) {
+                const obj = api.gameObjects[i];
                 if(currentObj.dist == null || obj.getAsPos().dist(player.getAsPos()) < currentObj.dist) {
                     currentObj.obj = obj;
                     currentObj.dist = obj.getAsPos().dist(player.getAsPos());

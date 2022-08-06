@@ -1,4 +1,5 @@
 
+import { commandPrefix } from "../commands/command";
 import { Category } from "../modules/module";
 import { setStorage, storageDat } from "../storage";
 
@@ -24,7 +25,14 @@ export function createPElem(content: string, clazz?: string) {
     return elem;
 }
 
+export function removeChildren(elem: HTMLElement) {
+    while(elem.firstChild) {
+        elem.removeChild(elem.firstChild);
+    }
+}
+
 export var canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
+export const chatBox = document.getElementById("chatBox") as HTMLInputElement;
 
 export var mouseDir: number;
 
@@ -32,57 +40,15 @@ canvas.addEventListener("mousemove", (e) => {
     mouseDir = Math.atan2(e.clientY - canvas.height / 2, e.clientX - canvas.width / 2);
 });
 
-/*var mouseX = 0,
-mouseY = 0;
-
-class ElemDat {
-    isDown = false;
-    constructor(public elem: HTMLElement) {
-
+chatBox.addEventListener("input", () => {
+    if(chatBox.value.startsWith(commandPrefix)) {
+        chatBox.removeAttribute("max");
+    } else {
+        chatBox.setAttribute("max", "30");
     }
-}*/
+});
 
-/*const elems: ElemDat[] = [];
-
-function moveToMouse(elem: HTMLElement) {
-    elem.style.left = mouseX + "px";
-    elem.style.top = mouseY + "px";
-}*/
-
-/*export function makeDraggable(elem: HTMLElement) {
-    var isDown = false;
-    elems.push(new ElemDat(elem));
-
-    elem.addEventListener("mousedown", (e) => {
-        isDown = true;
-        e.preventDefault();
-        console.log(elem.offsetTop, elem.offsetLeft);
-        if(e.button == 0) {
-            moveToMouse(elem);
-        }
-    });
-
-    elem.addEventListener("mousemove", (e) => {
-        if(!isDown) return;
-        mouseX = elem.offsetLeft + e.clientX;
-        mouseY = elem.offsetTop + e.clientY;
-        moveToMouse(elem);
-    });
-
-    elem.addEventListener("mouseup", () => {
-        isDown = false;
-    });
-}*/
-
-/*
-document.getElementById("gameCanvas")?.addEventListener("mousemove", (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    elems.forEach(dat => {
-        if(!dat.isDown) return;
-        moveToMouse(dat.elem);
-    });
-});*/
+export var guiHolder = createDiv("guiHolder");
 
 function cancelEvent(e: Event) {
     e.preventDefault();

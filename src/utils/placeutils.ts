@@ -14,6 +14,10 @@ export function placeSpike(dir: number) {
     place(player.getSpikeType(), dir);
 }
 
+export function placePad(dir: number) {
+    if(player.getPadType() != null) place(player.getPadType()!, dir);
+}
+
 export function healUp() {
     const foodType = getFoodType();
     //const healAmt = 100 - player.health;// 100 - 40 = 60
@@ -22,8 +26,9 @@ export function healUp() {
     //assume cookie 40
     //60 / 40 = 3/2, heal
     //scrap, just do check if less
-    for(let i = healBuff; i <= (100 - player.health); i += healBuff) {
+    for(let i = healBuff; i <= ((100 + healBuff) - player.health); i += healBuff) {
         heal();
+        // heal();
     }
 }
 

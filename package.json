@@ -9,5 +9,8 @@
   "devDependencies": {
     "typescript": "^4.5.4",
     "vite": "^2.9.2"
+  },
+  "dependencies": {
+    "@mathrandom7910/moomooapi": "^0.1.16"
   }
 }

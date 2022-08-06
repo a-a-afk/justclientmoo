@@ -2,9 +2,10 @@ import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessorie
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
 import { S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
 import { api, moduleManager, player } from "../../../instances";
+import { placeSpike } from "../../../utils/placeutils";
 import { acc, attackingGear, hat, primary, secondary } from "../../../utils/player";
 import { Category, Module } from "../../module";
-import { AutoAim } from "./AutoAim";
+import { angleToEnemy, AutoAim } from "./AutoAim";
 
 function attackMain() {
     attackingGear();
@@ -28,8 +29,14 @@ var counter = 0;
 var autoAimModule: AutoAim;
 var wasAutoaimDis = false;
 
+enum SpikePlaceCount {
+    NONE,
+    ONE,
+    TWO
+}
+
 export class InstaModule extends Module {
-    
+    spikePlaceCount = this.addEnum<SpikePlaceCount>("spikePlaceCount", SpikePlaceCount.NONE, SpikePlaceCount, "amount of spikes to place for the insta");
     constructor() {
         super("insta", Category.COMBAT, "insta kill noobs");
         
@@ -45,6 +52,7 @@ export class InstaModule extends Module {
 
             if(counter == 1) {
                 attackMain();
+                this.instaSpike();
             } else if(counter == 2) {
                 attackSecond();
             } else if(counter == 3) {
@@ -52,8 +60,6 @@ export class InstaModule extends Module {
                 this.disable();
             }
         });
-
-        autoAimModule
     }
 
     onPostInit(): void {
@@ -77,6 +83,15 @@ export class InstaModule extends Module {
     onDisable(): void {
         if(wasAutoaimDis) {
             autoAimModule.disable();
+        }
+    }
+
+    instaSpike() {
+        if(this.spikePlaceCount.val == SpikePlaceCount.ONE) {
+            placeSpike(angleToEnemy);
+        } else if(this.spikePlaceCount.val == SpikePlaceCount.TWO) {
+            placeSpike(angleToEnemy - 45);
+            placeSpike(angleToEnemy + 45);
         }
     }
 }

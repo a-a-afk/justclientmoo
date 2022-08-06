@@ -1,7 +1,7 @@
-import { HelpCommand } from "./command";
+import { UpgradeCommand } from "./commands/command";
 import { addCommand, addMod, moduleManager } from "./instances";
 import { ClientModule } from "./modules/modules/client/clientmodule";
-import { GuiModule } from "./modules/modules/client/GuiModule";
+import { GuiModule } from "./modules/modules/client/guimodule/GuiModule";
 import { NotificationModule } from "./modules/modules/client/notificationmodule";
 import { AntiTrap } from "./modules/modules/combat/antitrap";
 import { AutoAim } from "./modules/modules/combat/AutoAim";
@@ -20,6 +20,10 @@ import { initStorage } from "./storage";
 import { initStyle } from "./style";
 import { CurseBypass } from "./modules/modules/chat/cursebypass";
 import { ChatMirror } from "./modules/modules/chat/chatmirror";
+import { SpeedGear } from "./modules/modules/gear/speedgear";
+import { GearSettings } from "./modules/modules/gear/gearsettings";
+import { HelpCommand } from "./commands/helpcommand";
+import { BoostSpike } from "./modules/modules/combat/boostspiker";
 
 console.log("jusclient init...");
 
@@ -46,12 +50,16 @@ addMod(TrapNuker);
 addMod(AutoEz);
 addMod(CurseBypass);
 addMod(ChatMirror);
+addMod(SpeedGear);
+addMod(GearSettings);
+addMod(BoostSpike);
 // addMod(AntiTrap);
 moduleManager.init();
 initStorage();
 initStyle();
 
 addCommand(HelpCommand);
+addCommand(UpgradeCommand);
 
 console.log("justclient init finished in", Date.now() - startTime, "ms");
 

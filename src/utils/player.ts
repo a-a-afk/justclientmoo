@@ -3,12 +3,16 @@ import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
 import { C2SPacketType, S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
 import { Pos } from "@mathrandom7910/pos";
 import { api, player } from "../instances";
+import { gearSettingModule } from "../modules/module";
+
 
 export function hat(id: HatIds) {
+    if(gearSettingModule.buyHats.val) api.buyHat(id);
     api.equipHat(id);
 }
 
 export function acc(id: AccessoryIds) {
+    if(gearSettingModule.buyAccs.val) api.buyAccessory(id);
     api.equipAccessory(id);
 }
 

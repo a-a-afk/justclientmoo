@@ -1,12 +1,20 @@
+import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
+import { EventEmitter } from "@mathrandom7910/tseventemitter";
+import { Color } from "../utils/miscutils";
 import { Module } from "./module";
 
-export abstract class Setting<T> {
+interface SettingEvents<T> {
+    change: T
+}
+
+export abstract class Setting<T> extends EventEmitter<SettingEvents<T>> {
     val: T;
-    onSet: Function | null = null;
     settingCategory: string | null = null;
     constructor(public name: string, public defaultVal: T, public desc = "", public module: Module) {
+        super();
         this.val = defaultVal;
+        
     }
 
     abstract parse(stringVal: string): T;
@@ -17,7 +25,7 @@ export abstract class Setting<T> {
         } else this.val = val;
         this.save();
         
-        if(this.onSet) this.onSet();
+        this.emit("change", this.val);
         return true;
     }
 
@@ -28,6 +36,10 @@ export abstract class Setting<T> {
     setCategory(categoryName: string) {
         this.settingCategory = categoryName;
         return this;
+    }
+
+    asStr(): string {
+        return (this.val as any).toString();
     }
 }
 
@@ -98,6 +110,12 @@ export class HatSetting extends EnumSetting<HatIds> {
     }
 }
 
+export class AccSetting extends EnumSetting<AccessoryIds> {
+    constructor(name: string, defaultVal: AccessoryIds, module: Module, desc = "") {
+        super(name, defaultVal, desc, module);
+    }
+}
+
 export class StringSetting extends Setting<string> {
     constructor(name: string, defaultVal: string, module: Module, desc: string, public minLen?: number, public maxLen?: number) {
         super(name, defaultVal, desc, module);
@@ -125,5 +143,14 @@ export enum Buildings {
 export class BuildingSetting extends EnumSetting<Buildings> {
     constructor(name: string, defaultVal: Buildings, module: Module, desc: string) {
         super(name, defaultVal, Buildings, module, desc);
+    }
+}
+
+export class ColorSetting extends Setting<string> {
+    constructor(name: string, defVal: string | Color, desc: string, module: Module) {
+        super(name, defVal instanceof Color ? defVal.toHex() : defVal, desc, module);
+    }
+    parse(stringVal: string): string {
+        return stringVal
     }
 }

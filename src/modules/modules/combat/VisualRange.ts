@@ -1,4 +1,4 @@
-import { api } from "../../../instances";
+import { api, player } from "../../../instances";
 import { desktopNotif } from "../../../notifications";
 import { isBlurred } from "../../../utils/miscutils";
 import { Category, Module } from "../../module";
@@ -14,7 +14,7 @@ export class VisualRange extends Module {
         super("visualrange", Category.COMBAT, "notifies you if players come into/leave your view");
 
         this.onJust("playerEnterRange", (e) => {
-            if(!this.enter.val) return;
+            if(!this.enter.val || e.sid == player.sid) return;
 
             const notifStr = api.getPlayerBySid(e.sid)?.name + " has entered visual range";
             this.info(notifStr);
@@ -22,7 +22,7 @@ export class VisualRange extends Module {
         });
 
         this.onJust("playerExitRange", (e) => {
-            if(!this.exit.val) return;
+            if(!this.exit.val || e.sid == player.sid) return;
 
             const notifStr = api.getPlayerBySid(e.sid)?.name + " has exited visual range";
             this.info(notifStr);

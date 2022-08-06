@@ -1,9 +1,11 @@
+import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
 import { PlayerEvents } from "@mathrandom7910/moomooapi/src/events";
 import { api, IJustEvents, justEvents } from "../instances";
-import { addNotif } from "../notifications";
 import { ModuleData, saveModuleSettings } from "../storage";
-import { BindSetting, BoolSetting, Buildings, BuildingSetting, EnumSetting, HatSetting, NumSetting, Setting, StringSetting } from "./settings";
+import { Color, ErInf } from "../utils/miscutils";
+import { GearSettings } from "./modules/gear/gearsettings";
+import { AccSetting, BindSetting, BoolSetting, Buildings, BuildingSetting, ColorSetting, EnumSetting, HatSetting, NumSetting, Setting, StringSetting } from "./settings";
 
 export enum Category {
     COMBAT,
@@ -15,7 +17,7 @@ export enum Category {
     CHAT
 }
 
-export class Module {
+export class Module extends ErInf {
     settings: Setting<any>[] = [];
 
     bind = this.addBind("keybind", "the keybind to toggle");
@@ -26,7 +28,7 @@ export class Module {
     guiElement: HTMLDivElement | null = null;
 
     constructor(public name: string, public category: Category, public desc = "") {
-        
+        super();
     }
 
     onEnable() {
@@ -42,12 +44,17 @@ export class Module {
         this.save();
     }
 
+    defaultToggle() {
+        if(!this.toggleOnRelease.val) this.toggleOnRelease.set(true);
+        this.save();
+    }
+
     info(notif: string) {
-        addNotif(`[${this.name}] ${notif}`);
+        super.info(`[${this.name}] ${notif}`);
     }
 
     error(notif: string) {
-        addNotif(`[${this.name}] ${notif}`, true);
+        super.error(`[${this.name}] ${notif}`);
     }
 
     enable() {
@@ -55,6 +62,9 @@ export class Module {
         //console.log("enabled", this.name);
         if(this.showNotifs.val) this.info("enabled");
         this.guiElement?.classList?.add("moduleEnabled");
+        for(const iDat of this.intervalData) {
+            iDat.interval = setInterval(iDat.cb, iDat.ms) as unknown as number;
+        }
         this.onEnable();
     }
 
@@ -63,6 +73,9 @@ export class Module {
         //console.log("disabled", this.name);
         if(this.showNotifs.val) this.info("disabled" + (reason ? " " + reason : ""));
         this.guiElement?.classList?.remove("moduleEnabled");
+        for(const iDat of this.intervalData) {
+            clearInterval(iDat.interval);
+        }
         this.onDisable();
     }
 
@@ -91,6 +104,10 @@ export class Module {
         return this.addSetting(new HatSetting(name, defaultVal, this, desc));
     }
 
+    addAcc(name: string, defaultVal: AccessoryIds, desc = "") {
+        return this.addSetting(new AccSetting(name, defaultVal, this, desc));
+    }
+
     addString(name: string, defaultVal = "", desc = "", minLen?: number, maxLen?: number) {
         return this.addSetting(new StringSetting(name, defaultVal, this, desc, minLen, maxLen));
     }
@@ -98,6 +115,11 @@ export class Module {
     addBuild(name: string, defaultVal: Buildings, desc = "") {
         return this.addSetting(new BuildingSetting(name, defaultVal, this, desc));
     }
+
+    addCol(name: string, defaultVal: string | Color, desc = "") {
+        return this.addSetting(new ColorSetting(name, defaultVal, desc, this));
+    }
+
 
     save() {
         saveModuleSettings(this);
@@ -161,6 +183,15 @@ export class Module {
             this.disable();
         } else this.enable();
     }
+
+    intervalData: { ms: number, cb: () => void, interval: number }[] = [];
+
+    interval(millis: number, callBack: () => void) {
+        // return setInterval(() => {
+        //     if(this.enabled.val) cb();
+        // }, ms);
+        this.intervalData.push({ ms: millis, cb: callBack, interval: -1 });
+    }
 }
 
 export class NoArgMod extends Module {
@@ -169,6 +200,8 @@ export class NoArgMod extends Module {
     }
 }
 
+export var gearSettingModule: GearSettings;
+
 export class ModuleManager {
     modules: Module[] = [];
     moduleMap: Map<typeof Module, Module> = new Map();
@@ -176,6 +209,9 @@ export class ModuleManager {
     addMod(moduleType: typeof NoArgMod) {
         if(this.moduleMap.has(moduleType)) return;
         const modObj = new moduleType();
+        if(modObj.name == "gearsettings") {
+            gearSettingModule = modObj as any;
+        }
         this.moduleMap.set(moduleType, modObj);
         this.modules.push(modObj);
         return this;
@@ -189,7 +225,7 @@ export class ModuleManager {
             }
         } else {
             //mod class
-            return this.moduleMap.get(modNameOrType) || null;
+            return this.moduleMap.get(modNameOrType)!;
         }
 
         return null;

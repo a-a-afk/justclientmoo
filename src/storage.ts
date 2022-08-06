@@ -26,6 +26,12 @@ export interface ModuleData {
     moduleName: string
 }
 
+export interface ConfigData {
+    modules: ModuleData[],
+    menuPos: Record<number, MenuPosDat>,
+    name: string
+}
+
 export interface StorageData {
     modules: ModuleData[],
     menuPos: Record<number, MenuPosDat>
@@ -34,6 +40,10 @@ export interface StorageData {
 }
 
 export var storageDat = defaultDat;
+
+export function setDat(dat: StorageData) {
+    storageDat = dat;
+}
 
 const storDat = getStorage();
 
@@ -86,18 +96,16 @@ export function initStorage() {
         if(module == null) continue;
         
         for(const storSet of storMod.settings) {
-           // console.log("IN SET", module?.getSetting(storSet.name)?.val, storSet.value);
            const setting = module.getSetting(storSet.name);
-           
            if(setting == null) continue;
             setting.set(storSet.value);
             if(setting == module.enabled) {
                 if(setting.val) {
-                    module.enable();
+                    if(!module.enabled.val) module.enable();
+                } else if(module.enabled) {
+                    module.disable();
                 }
             }
-
-           // console.log("POST SET", module?.getSetting(storSet.name)?.val, storSet.value);
         }
     }
     allowSaving = true;

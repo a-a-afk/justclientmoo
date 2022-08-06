@@ -2,7 +2,8 @@ import { MooMooAPI } from "@mathrandom7910/moomooapi";
 import { api, moduleManager } from "./instances";
 import { NotificationModule } from "./modules/modules/client/notificationmodule";
 import { createDiv, createPElem } from "./utils/elementutils";
-import { formatString, isBlurred } from "./utils/miscutils";
+import { isBlurred } from "./utils/miscutils";
+import { formatString } from "./utils/stringutils";
 
 var notifs: HTMLDivElement[] = [];
 

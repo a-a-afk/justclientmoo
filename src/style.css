@@ -85,7 +85,26 @@
   background-color: rgba(116, 13, 13, 0.658);
 }
 
-.helpCmdDiv {
-  display: inline-block;
-  width: fit-content;
+.commandDiv {
+  display: block;
+  width: 100%;
+  height: fit-content;
+  padding: 3px;
+  text-align: center;
+  padding: 5px;
+  border: 2px solid rgba(1, 26, 54, 0.26);
+}
+
+.helpDiv {
+  display: block;
+  width: 50%;
+  height: 50%;
+  background-color: rgba(16, 58, 148, 0.637);
+  border-radius: 8px;
+}
+
+.commandDivName {
+  width: 100%;
+  height: fit-content;
+  text-align: center;
 }
