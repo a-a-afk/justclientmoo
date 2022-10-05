@@ -1,5 +1,6 @@
 import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
+import { C2SPacketType, S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
 import { EventEmitter } from "@mathrandom7910/tseventemitter";
 import { Color } from "../utils/miscutils";
 import { Module } from "./module";
@@ -106,7 +107,7 @@ export class EnumSetting<T> extends Setting<T> {
 
 export class HatSetting extends EnumSetting<HatIds> {
     constructor(name: string, defaultVal: HatIds, module: Module, desc = "") {
-        super(name, defaultVal, desc, module);
+        super(name, defaultVal, HatIds, module, desc);
     }
 }
 
@@ -146,11 +147,29 @@ export class BuildingSetting extends EnumSetting<Buildings> {
     }
 }
 
-export class ColorSetting extends Setting<string> {
-    constructor(name: string, defVal: string | Color, desc: string, module: Module) {
-        super(name, defVal instanceof Color ? defVal.toHex() : defVal, desc, module);
+export class ColorSetting extends Setting<Color> {
+    constructor(name: string, defVal: Color, desc: string, module: Module) {
+        super(name, defVal, desc, module);
     }
-    parse(stringVal: string): string {
-        return stringVal
+
+    parse(stringVal: string): Color {
+        console.log(stringVal, Color.from(stringVal))
+        return Color.from(stringVal);
+    }
+
+    asStr(): string {
+        return this.val.toHex();
+    }
+}
+
+export class C2SPacketSetting extends EnumSetting<C2SPacketType> {
+    constructor(name: string, defaultVal: C2SPacketType, module: Module, desc = "") {
+        super(name, defaultVal, C2SPacketType, module, desc);
+    }
+}
+
+export class S2CPacketSetting extends EnumSetting<S2CPacketType> {
+    constructor(name: string, defaultVal: S2CPacketType, module: Module, desc = "") {
+        super(name, defaultVal, C2SPacketType, module, desc);
     }
 }

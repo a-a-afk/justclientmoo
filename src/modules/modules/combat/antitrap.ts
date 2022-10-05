@@ -7,6 +7,7 @@ import { Category, Module } from "../../module";
 import { Buildings } from "../../settings";
 
 var isInTrap = false;
+var inTrapLastFrame = false;
 var buildId = player.getSpikeType();
 
 export class AntiTrap extends Module {
@@ -17,13 +18,17 @@ export class AntiTrap extends Module {
     constructor() {
         super("antitrap", Category.COMBAT, "protects you while in a trap");
 
-        this.on("updatePlayer", (e) => {
-            if(e.sid != player.sid) return;
+        this.on("serverTick", () => {
 
             isInTrap = false;
-            for(const i in api.gameObjects) {
-                const building = api.gameObjects[i];
-                if(!building || building.buildType != ItemIds.PIT_TRAP || getDistance(player.getAsPos(), buildingToPos(building)) > 95) return;
+            // console.log(api.gameObjects)
+            for(const building of api.gameObjects) {
+                // console.log(building.id, api.gameObjects.length)
+                // const building = api.gameObjects[i];
+                // if(player.dist(building) < 100) {
+                //     console.log(building, building?.buildType == ItemIds.PIT_TRAP, building?.ownerSid == player.sid);
+                // }
+                if(!building || building.buildType != ItemIds.PIT_TRAP || getDistance(player, buildingToPos(building)) > 100 || building.ownerSid == player.sid) continue;
                 
                 buildId = player.getSpikeType();
                 if(this.blockingType.val == Buildings.MILL) {
@@ -37,15 +42,18 @@ export class AntiTrap extends Module {
                 } else if(this.blockingType.val == Buildings.WALL) {
                     buildId = player.getWallType();
                 }
+                // console.log("placing build", buildId);
 
-                defendTrap(buildId, this.placeIncr.val);
+                if(!inTrapLastFrame) defendTrap(buildId, this.placeIncr.val);
                 isInTrap = true;
+                // console.log("In a trap")
                 break;
             }
+            inTrapLastFrame = isInTrap;
         });
         
         this.on("removeObject", (e) => {
-            if(e.building.buildType == ItemIds.PIT_TRAP || getDistance(player.getAsPos(), e.getAsPos()) >= 150 || !isInTrap) return;
+            if(e.building.buildType == ItemIds.PIT_TRAP || getDistance(player, e.building) >= 150 || !isInTrap) return;
             defendTrap(buildId, this.placeIncr.val)
         });
     }

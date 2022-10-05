@@ -21,9 +21,9 @@ export class Nuker extends Module {
             }
             for(const i in api.gameObjects) {
                 const obj = api.gameObjects[i];
-                if(currentObj.dist == null || obj.getAsPos().dist(player.getAsPos()) < currentObj.dist) {
+                if(currentObj.dist == null || obj.dist(player.getAsPos()) < currentObj.dist) {
                     currentObj.obj = obj;
-                    currentObj.dist = obj.getAsPos().dist(player.getAsPos());
+                    currentObj.dist = obj.dist(player.getAsPos());
                 }
             }
 

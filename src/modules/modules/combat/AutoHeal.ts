@@ -29,7 +29,6 @@ export class AutoHeal extends Module {
     antiAgeOne = this.addBool("antiageone", true, "tries to outheal age one instas");
 
     constructor() {
-        
         super("autoheal", Category.COMBAT, "automatically heals");
         this.on("health", (e) => {
 

@@ -7,7 +7,7 @@ export function getTime() {
 }
 
 export class Color {
-    constructor(public r: number, public g: number, public b: number, public a = 1) {
+    constructor(public r: number, public g: number, public b: number) {
 
     }
 
@@ -24,6 +24,13 @@ export class Color {
     static BLUE = new Color(0, 0, 255);
     static WHITE = new Color(255, 255, 255);
     static BLACK = new Color(0, 0, 0);
+
+    static from(str: string) {
+        const obj = JSON.parse(str) as Color;
+        const col = new Color(obj.r, obj.g, obj.b);
+        
+        return col;
+    }
 }
 
 export var isBlurred = false;

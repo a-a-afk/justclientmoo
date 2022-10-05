@@ -54,10 +54,10 @@
 .dispGui {
   display: block;
   width: 45%;
-  height: 45%;
+  height: 70%;
   background-color: rgba(16, 58, 148, 0.637);
-  overflow-y: scroll;
-  border-radius: 11px;
+  overflow-y: hidden;
+  /* border-radius: 11px; */
 }
 
 .settingDiv {
@@ -68,8 +68,8 @@
   place-content: center;
   margin-bottom: 4px;
   box-sizing: border-box;
-  border-style: solid;
-  border-color: rgba(1, 26, 54, 0.26);
+  /* border-style: solid; */
+  /* border-color: rgba(1, 26, 54, 0.26); */
 }
 
 .settingContent {
@@ -107,4 +107,8 @@
   width: 100%;
   height: fit-content;
   text-align: center;
+}
+
+.settingContent[type=color] {
+  width: 30px;
 }

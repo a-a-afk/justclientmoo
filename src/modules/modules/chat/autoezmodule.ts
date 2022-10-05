@@ -12,7 +12,7 @@ export class AutoEz extends Module {
         super("autoez", Category.CHAT, "Automatically insult players after death");
 
         this.onJust("playerExitRange", (e) => {
-            if(getTime() - killTime >= 1000) return;
+            if(getTime() - killTime >= 500) return;
             exportObj.targetPlayer = e;
             api.chat(formatString(this.msg.val));
         });

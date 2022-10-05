@@ -1,5 +1,4 @@
 import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
-import { Color } from "../../../utils/miscutils";
 import { Category, Module } from "../../module";
 import { Buildings } from "../../settings";
 
@@ -21,7 +20,7 @@ export class DebugModule extends Module {
         }
 
         this.addEnum("enum setting", AnEnum.ENUMVAL1, AnEnum, "an enum setting");
-        this.addCol("color setting", Color.RED, "a color setting");
+        // this.addCol("color setting", Color.RED, "a color setting");
 
         
         //add enums

@@ -6,12 +6,20 @@ const clientKey = "justclient";
 export interface MenuPosDat {
     left: number,
     top: number,
-    category: Category
+    category: Category,
+    expanded: boolean
+}
+
+export interface Config {
+    modules: ModuleData[],
+    menuPos: Record<number, MenuPosDat>
 }
 
 export const defaultDat: StorageData = {
-    modules: [],
-    menuPos: {},
+    curConfig: {
+        modules: [],
+        menuPos: {}
+    },
     version: "0.0.0",
     isDev: true
 }
@@ -33,8 +41,7 @@ export interface ConfigData {
 }
 
 export interface StorageData {
-    modules: ModuleData[],
-    menuPos: Record<number, MenuPosDat>
+    curConfig: Config,
     version: string,
     isDev: boolean
 }
@@ -72,25 +79,26 @@ export var allowSaving = false;
 
 export function saveModuleSettings(module: Module) {
     if(!allowSaving) return;
-    for(let i = 0; i < storageDat.modules.length; i++) {
-        const saveSet = storageDat.modules[i];
+    const cC = storageDat.curConfig;
+    for(let i = 0; i < cC.modules.length; i++) {
+        const saveSet = cC.modules[i];
 
         if(saveSet.moduleName == module.name) {
-            storageDat.modules[i] = module.getModuleData();
+            cC.modules[i] = module.getModuleData();
             
             setStorage(storageDat);
             return;
         }
     }
 
-    storageDat.modules.push(module.getModuleData());
+    cC.modules.push(module.getModuleData());
     setStorage(storageDat);
 }
 
 
 
 export function initStorage() {
-    for(const storMod of storageDat.modules) {
+    for(const storMod of storageDat.curConfig.modules) {
         const module = moduleManager.getModule(storMod.moduleName);
 
         if(module == null) continue;
@@ -101,9 +109,7 @@ export function initStorage() {
             setting.set(storSet.value);
             if(setting == module.enabled) {
                 if(setting.val) {
-                    if(!module.enabled.val) module.enable();
-                } else if(module.enabled) {
-                    module.disable();
+                    module.enable();
                 }
             }
         }

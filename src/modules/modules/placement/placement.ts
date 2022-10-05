@@ -30,7 +30,7 @@ class PlacementModule extends Module {
 
         this.bind.on("change", (v) => {
             (this.repeater!).code = v;
-        })
+        });
 
         addRepeater(this.repeater);
     }

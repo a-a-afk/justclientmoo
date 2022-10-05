@@ -90,10 +90,11 @@ export function makeDraggable(elem: HTMLElement, cat: Category) {
         
         elem.style.top = tmpTop + "px";
         elem.style.left = tmpLeft + "px";
-        storageDat.menuPos[cat] = {
+        storageDat.curConfig.menuPos[cat] = {
             left: tmpLeft,
             top: tmpTop,
-            category: cat
+            category: cat,
+            expanded: JSON.parse(elem.getAttribute("expanded")!)
         }
         setStorage();
     }

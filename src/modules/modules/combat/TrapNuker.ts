@@ -7,16 +7,15 @@ export class TrapNuker extends Module {
     constructor() {
         super("trapnuker", Category.COMBAT, "Breaks traps that you're in");
         this.on("serverTick", () => {
-            for(const i in api.gameObjects) {
-                const obj = api.gameObjects[i];
-                const objPos = obj.getAsPos();
-                if(obj.buildType == ItemIds.PIT_TRAP && objPos.dist(player.getAsPos()) <= 95) {
-                    lookAt(objPos);
+            for(const obj of api.gameObjects) {
+                if(obj.buildType == ItemIds.PIT_TRAP && obj.dist(player) <= 95) {
+                    lookAt(obj);
                     if(!isAutoFire) {
                         toggleAuto();
                     }
                 }
             }
+            
         });
     }
 

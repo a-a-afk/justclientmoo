@@ -143,4 +143,3 @@ export class ConfigCommand extends Command {
         return false;
     }
 }
-

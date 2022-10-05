@@ -181,3 +181,7 @@ api.on("serverTick", (e) => {
 export function addMod(mod: typeof NoArgMod) {
     moduleManager.addMod(mod);
 }
+
+export function getMod(mod: typeof NoArgMod) {
+    return moduleManager.getModule(mod);
+}

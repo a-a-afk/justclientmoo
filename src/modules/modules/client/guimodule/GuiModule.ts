@@ -1,5 +1,5 @@
 import { moduleManager } from "../../../../instances";
-import { storageDat } from "../../../../storage";
+import { setStorage, storageDat } from "../../../../storage";
 import { createDiv, createElement, createInput, guiHolder, makeDraggable } from "../../../../utils/elementutils";
 import { Category, Module } from "../../../module";
 import { BindSetting, BoolSetting, ColorSetting, EnumSetting, NumSetting, StringSetting } from "../../../settings";
@@ -8,6 +8,10 @@ const moduleDiv = createDiv("invisHolder");
 
 var modGui: HTMLDivElement | null;
 var currentModGui: string | null = null;
+
+window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+});
 
 guiHolder.appendChild(moduleDiv);
 const categoryDivs = new Map<Category, HTMLDivElement>();
@@ -20,7 +24,8 @@ export class GuiModule extends Module {
     static bindingSetting: BindSetting | null = null;
     static bindingSettingElm: HTMLElement;
 
-    closeOnEscape = this.addBool("escapeclose", true, "closes the gui when you hit escape")
+    closeOnEscape = this.addBool("escapeclose", true, "closes the gui when you hit escape");
+    // particles = this.addBool("particles", true, "WOAH DUDE");
 
     constructor() {
         super("gui", Category.CLIENT, "the gui");
@@ -32,10 +37,15 @@ export class GuiModule extends Module {
                 this.disable();
             }
         });
+
+        // this.particles.on("change", () => {
+        //     this.tryRender();
+        // });
     }
 
     onEnable(): void {
         guiHolder.style.display = "block";
+        this.tryRender();
     }
 
     onDisable(): void {
@@ -50,21 +60,21 @@ export class GuiModule extends Module {
     renderGui(module: Module) {
         const guiDiv = createDiv("dispGui");
         const nameDiv = createDiv("settingDiv");
-        const borderStr = "rgba(1, 26, 54, 0.89)";
+        // const borderStr = "rgba(1, 26, 54, 0.89)";
 
-        nameDiv.style["border-color" as any] = borderStr;
+        // nameDiv.style["border-color" as any] = borderStr;
         nameDiv.textContent = module.name;
         guiDiv.append(nameDiv);
 
         for(const setting of module.settings) {
             const settingDiv = createDiv("settingDiv");
-            settingDiv.style["border-color" as any] = borderStr;
+            // settingDiv.style["border-color" as any] = borderStr;
             // settingDiv.onmouseenter = () => {
 
             // }
             settingDiv.title = setting.desc;
             const settingName = createDiv("settingContent");
-            settingName.textContent = setting.name;
+            settingName.textContent = `${setting.name}:`;
 
             settingDiv.appendChild(settingName);
             const settingElmHolder = createDiv("settingContent");
@@ -150,7 +160,7 @@ export class GuiModule extends Module {
                 settingElmHolder.appendChild(settingElm);
             } else if(setting instanceof ColorSetting) {
                 const settingElm = createInput("color", "settingContent");
-                settingElm.value = setting.val;
+                settingElm.value = setting.asStr();
 
                 settingElm.oninput = () => {
                     setting.set(settingElm.value);
@@ -168,17 +178,39 @@ export class GuiModule extends Module {
     }
 
     onPostInit(): void {
+        function setExpanded(categoryDiv: HTMLDivElement, exp: boolean, cat: Category) {
+            console.log(exp, )
+            for(const child of Array.from(categoryDiv.children) as HTMLElement[]) {
+                if(child.tagName == "DIV"){
+                    child.style.display = exp ? "block" : "none";
+                }
+            }
+            categoryDiv.setAttribute("expanded", exp.toString());
+            storageDat.curConfig.menuPos[cat].expanded = JSON.parse(categoryDiv.getAttribute("expanded")!);
+            setStorage();
+        }
+
         for(const module of moduleManager.modules) {
             if(categoryDivs.has(module.category)) continue;
 
             const categoryDiv = createDiv("catDiv");
             categoryDiv.append(Category[module.category]);
 
-            const ind = storageDat.menuPos[module.category];
+            const ind = storageDat.curConfig.menuPos[module.category];
             if(ind) {
                 categoryDiv.style.top = ind.top + "px";
                 categoryDiv.style.left = ind.left + "px";
             }
+
+
+            
+            categoryDiv.addEventListener("mousedown", (e) => {
+                
+                if(e.button == 2 && e.target == categoryDiv) {
+                    setExpanded(categoryDiv, !JSON.parse(categoryDiv.getAttribute("expanded")!), module.category);
+                }
+            });
+            
             
 
             categoryDivs.set(module.category, categoryDiv);
@@ -192,6 +224,8 @@ export class GuiModule extends Module {
 
            const catDiv = categoryDivs.get(module.category);
            if(!catDiv) continue;
+
+
 
            catDiv.appendChild(modDiv);
 
@@ -216,12 +250,23 @@ export class GuiModule extends Module {
            });
 
            makeDraggable(catDiv, module.category);
+           setExpanded(catDiv, storageDat.curConfig.menuPos[module.category].expanded ?? true, module.category);
         }
 
-        for(const [, catDiv] of categoryDivs) {
+        
+
+        for(const catDiv of categoryDivs.values()) {
             guiHolder.appendChild(catDiv);
         }
 
         document.body.appendChild(guiHolder);
+    }
+
+    tryRender() {
+        // if(!this.enabled || !this.particles) return;
+
+        
+
+        // requestAnimationFrame(this.tryRender);
     }
 }

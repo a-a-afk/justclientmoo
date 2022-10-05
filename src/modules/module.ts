@@ -61,7 +61,7 @@ export class Module extends ErInf {
         this.enabled.set(true);
         //console.log("enabled", this.name);
         if(this.showNotifs.val) this.info("enabled");
-        this.guiElement?.classList?.add("moduleEnabled");
+        this.guiElement!.classList.add("moduleEnabled");
         for(const iDat of this.intervalData) {
             iDat.interval = setInterval(iDat.cb, iDat.ms) as unknown as number;
         }
@@ -72,7 +72,7 @@ export class Module extends ErInf {
         this.enabled.set(false);
         //console.log("disabled", this.name);
         if(this.showNotifs.val) this.info("disabled" + (reason ? " " + reason : ""));
-        this.guiElement?.classList?.remove("moduleEnabled");
+        this.guiElement!.classList.remove("moduleEnabled");
         for(const iDat of this.intervalData) {
             clearInterval(iDat.interval);
         }
@@ -116,7 +116,7 @@ export class Module extends ErInf {
         return this.addSetting(new BuildingSetting(name, defaultVal, this, desc));
     }
 
-    addCol(name: string, defaultVal: string | Color, desc = "") {
+    addCol(name: string, defaultVal: Color, desc = "") {
         return this.addSetting(new ColorSetting(name, defaultVal, desc, this));
     }
 
@@ -217,18 +217,21 @@ export class ModuleManager {
         return this;
     }
 
-    getModule(modNameOrType: string | typeof Module) {
+    getModule(modName: string): NoArgMod | null;
+
+    getModule<K extends typeof NoArgMod>(mod: K): K;
+
+    getModule<K extends typeof NoArgMod>(modNameOrType: string | K) {
         if(typeof modNameOrType == "string") {
             //mod name
             for(const mod of this.modules) {
                 if(mod.name == modNameOrType) return mod;
             }
+            return null;
         } else {
             //mod class
-            return this.moduleMap.get(modNameOrType)!;
+            return this.moduleMap.get(modNameOrType) as unknown as K;
         }
-
-        return null;
     }
 
     init() {

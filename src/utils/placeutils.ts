@@ -1,3 +1,4 @@
+// import { itemList } from "@mathrandom7910/moomooapi/src/data/objects/items";
 import { ItemIds } from "@mathrandom7910/moomooapi/src/data/objects/items";
 import { api, player } from "../instances";
 import { getFoodType } from "./itemutils";
@@ -35,3 +36,7 @@ export function healUp() {
 export function healWithDelay() {
     setTimeout(healUp, 125);
 }
+
+// export function canPlace(build: ItemIds, dir: number) {
+//     itemList[build].scale
+// }
