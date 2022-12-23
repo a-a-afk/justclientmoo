@@ -1,4 +1,4 @@
-import { C2SPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
+import { C2SPacketType } from "@mathrandom7910/moomooapi";
 import { api } from "../../../instances";
 import { onSendPack } from "../../../utils/networkutils";
 import { Category, Module } from "../../module";

@@ -1,6 +1,4 @@
-import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
-import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
-import { PlayerEvents } from "@mathrandom7910/moomooapi/src/events";
+import { AccessoryIds, HatIds, PlayerEvents } from "@mathrandom7910/moomooapi";
 import { api, IJustEvents, justEvents } from "../instances";
 import { ModuleData, saveModuleSettings } from "../storage";
 import { Color, ErInf } from "../utils/miscutils";
@@ -44,13 +42,17 @@ export class Module extends ErInf {
         this.save();
     }
 
+    /**
+     * Defaults toggleonrelease to true
+     */
+
     defaultToggle() {
         if(!this.toggleOnRelease.val) this.toggleOnRelease.set(true);
         this.save();
     }
 
-    info(notif: string) {
-        super.info(`[${this.name}] ${notif}`);
+    info(notif: string, noChat?: boolean) {
+        super.info(`[${this.name}] ${notif}`, noChat);
     }
 
     error(notif: string) {
@@ -207,7 +209,7 @@ export class ModuleManager {
     moduleMap: Map<typeof Module, Module> = new Map();
 
     addMod(moduleType: typeof NoArgMod) {
-        if(this.moduleMap.has(moduleType)) return;
+        if(this.moduleMap.has(moduleType)) throw new Error(`Module ${moduleType.constructor.name} already registered`);
         const modObj = new moduleType();
         if(modObj.name == "gearsettings") {
             gearSettingModule = modObj as any;
@@ -219,7 +221,7 @@ export class ModuleManager {
 
     getModule(modName: string): NoArgMod | null;
 
-    getModule<K extends typeof NoArgMod>(mod: K): K;
+    getModule<K extends typeof NoArgMod>(mod: K): InstanceType<K>;
 
     getModule<K extends typeof NoArgMod>(modNameOrType: string | K) {
         if(typeof modNameOrType == "string") {

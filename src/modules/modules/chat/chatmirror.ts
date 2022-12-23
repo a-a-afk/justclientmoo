@@ -1,4 +1,4 @@
-import { S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
+import { S2CPacketType } from "@mathrandom7910/moomooapi";
 import { api, player } from "../../../instances";
 import { onRecPack } from "../../../utils/networkutils";
 import { Category, Module } from "../../module";

@@ -1,4 +1,4 @@
-import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
+import { HatIds } from "@mathrandom7910/moomooapi";
 import { api } from "../../../instances";
 import { hat } from "../../../utils/player";
 import { Category, Module } from "../../module";

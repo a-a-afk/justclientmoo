@@ -17,7 +17,7 @@ guiHolder.appendChild(moduleDiv);
 const categoryDivs = new Map<Category, HTMLDivElement>();
 
 export function getBindSettingStr(setting: BindSetting) {
-    return `BIND: ${setting.val}`;
+    return `BIND: ${setting.val || "NONE"}`;
 }
 
 export class GuiModule extends Module {
@@ -59,11 +59,11 @@ export class GuiModule extends Module {
 
     renderGui(module: Module) {
         const guiDiv = createDiv("dispGui");
-        const nameDiv = createDiv("settingDiv");
+        const nameDiv = createDiv("settingDiv", "setTitle");
         // const borderStr = "rgba(1, 26, 54, 0.89)";
 
         // nameDiv.style["border-color" as any] = borderStr;
-        nameDiv.textContent = module.name;
+        nameDiv.textContent = `${module.name} : ${module.desc}`;
         guiDiv.append(nameDiv);
 
         for(const setting of module.settings) {
@@ -74,10 +74,19 @@ export class GuiModule extends Module {
             // }
             settingDiv.title = setting.desc;
             const settingName = createDiv("settingContent");
-            settingName.textContent = `${setting.name}:`;
+            settingName.textContent = `${setting.name} : ${setting.desc}`;
 
             settingDiv.appendChild(settingName);
             const settingElmHolder = createDiv("settingContent");
+            if(setting.req){
+                setting.req.otherSetting.on("change", (val) => {
+                    if(val == setting.req?.toBeVal) {
+                        settingDiv.style.display = "grid";
+                    } else {
+                        settingDiv.style.display = "none";
+                    }
+                });
+            }
             if(setting instanceof BoolSetting) {
                 const settingElm = createInput("checkbox", "settingContent");
                 
@@ -95,17 +104,26 @@ export class GuiModule extends Module {
                 settingElmHolder.appendChild(settingElm);
                 // settingDiv.appendChild(settingElmHolder);
             } else if(setting instanceof BindSetting) {
-                const settingElm = createElement("button", "settingContent");
+                const settingElm = createElement("button", "settingContent", "bindBtn");
                 settingElm.textContent = getBindSettingStr(setting);
 
-                settingElm.onclick = () => {
-                    if(GuiModule.bindingSetting != setting) {
-                        GuiModule.bindingSetting = setting;
-                        GuiModule.bindingSettingElm = settingElm;
-                        settingElm.textContent = "BIND: BINDING";
-                    } else {
-                        GuiModule.bindingSetting = null;
+                settingElm.onmousedown = (e) => {
+                    if(e.button == 2) {
+                        if(GuiModule.bindingSetting == setting) {
+                            GuiModule.bindingSetting = null;
+                        }
+                        setting.set("");
+                        setting.save();
                         settingElm.textContent = getBindSettingStr(setting);
+                    } else {
+                        if(GuiModule.bindingSetting != setting) {
+                            GuiModule.bindingSetting = setting;
+                            GuiModule.bindingSettingElm = settingElm;
+                            settingElm.textContent = "BIND: BINDING";
+                        } else {
+                            GuiModule.bindingSetting = null;
+                            settingElm.textContent = getBindSettingStr(setting);
+                        }
                     }
                 }
                 // const settingElmHolder = createDiv("settingContent");
@@ -116,10 +134,10 @@ export class GuiModule extends Module {
                 settingElm.min = setting.minVal.toString();
                 settingElm.max = setting.maxVal.toString();
                 settingElm.value = setting.val.toString();
-                settingName.textContent = `${setting.name}: ${settingElm.value}`;
+                settingName.textContent = `${setting.name} : ${settingElm.value} : ${setting.desc}`;
 
                 settingElm.oninput = () => {
-                    settingName.textContent = `${setting.name}: ${settingElm.value}`;
+                    settingName.textContent = `${setting.name} : ${settingElm.value} : ${setting.desc}`;
                     setting.set(settingElm.value);
                 }
                 //settingElm.setAttribute("type", "range");
@@ -179,13 +197,20 @@ export class GuiModule extends Module {
 
     onPostInit(): void {
         function setExpanded(categoryDiv: HTMLDivElement, exp: boolean, cat: Category) {
-            console.log(exp, )
             for(const child of Array.from(categoryDiv.children) as HTMLElement[]) {
                 if(child.tagName == "DIV"){
                     child.style.display = exp ? "block" : "none";
                 }
             }
             categoryDiv.setAttribute("expanded", exp.toString());
+            if(!storageDat.curConfig.menuPos[cat]) {
+                storageDat.curConfig.menuPos[cat] = {
+                    left: 0,
+                    top: 0,
+                    category: cat,
+                    expanded: true
+                }
+            }
             storageDat.curConfig.menuPos[cat].expanded = JSON.parse(categoryDiv.getAttribute("expanded")!);
             setStorage();
         }
@@ -250,7 +275,7 @@ export class GuiModule extends Module {
            });
 
            makeDraggable(catDiv, module.category);
-           setExpanded(catDiv, storageDat.curConfig.menuPos[module.category].expanded ?? true, module.category);
+           setExpanded(catDiv, storageDat.curConfig.menuPos[module.category]?.expanded ?? true, module.category);
         }
 
         

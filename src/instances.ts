@@ -1,14 +1,11 @@
-import { MooMooAPI } from "@mathrandom7910/moomooapi";
-import { Repeater } from "@mathrandom7910/moomooapi/src/misc";
-import { C2SPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
-import { Player, IPlayerDat } from "@mathrandom7910/moomooapi/src/player";
+import { C2SPacketType, IPlayerDat, MooMooAPI, Player, Repeater } from "@mathrandom7910/moomooapi";
 import { Command, commandPrefix, NoArgCommand } from "./commands/command";
 import { ModuleManager, NoArgMod } from "./modules/module";
 import { getBindSettingStr, GuiModule } from "./modules/modules/client/guimodule/GuiModule";
 import { addNotif } from "./notifications";
 import { getDistance } from "@mathrandom7910/mathplus";
-import { chatBox } from "./utils/elementutils";
-import { EventEmitter } from "@mathrandom7910/tseventemitter";
+import { chatHolder as chatHolder } from "./utils/elementutils";
+import EventEmitter from "@mathrandom7910/tseventemitter";
 
 export interface IJustEvents {
     playerEnterRange: IPlayerDat,
@@ -31,7 +28,7 @@ const repeaters: Repeater<string>[] = [];
 export var shouldPacket = false;
 
 document.addEventListener("keydown", e => {
-    if(chatBox.style.display == "block") return;
+    if (chatHolder.style.display == "block") return;
     repeaters.forEach(rep => {
         rep.start(e.code);
     });
@@ -58,7 +55,7 @@ export function addRepeater(repeater: Repeater<string>) {
 }
 
 document.addEventListener("keyup", e => {
-    if(chatBox.style.display == "block") return;
+    if (chatHolder.style.display == "block") return;
     keysDown[e.code] = false;
     repeaters.forEach(rep => {
         rep.stop(e.code);
@@ -182,6 +179,6 @@ export function addMod(mod: typeof NoArgMod) {
     moduleManager.addMod(mod);
 }
 
-export function getMod(mod: typeof NoArgMod) {
+export function getMod<K extends typeof NoArgMod>(mod: K) {
     return moduleManager.getModule(mod);
 }

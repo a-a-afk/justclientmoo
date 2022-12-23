@@ -3,24 +3,27 @@ import { commandPrefix } from "../commands/command";
 import { Category } from "../modules/module";
 import { setStorage, storageDat } from "../storage";
 
-export function createElement<K extends keyof HTMLElementTagNameMap>(name: K, clazz?: string) {
+export function createElement<K extends keyof HTMLElementTagNameMap>(name: K, ...clazzes: string[]) {
     const elem = document.createElement(name);
-    if(clazz) elem.className = clazz;
+    for(const clazz of clazzes) {
+        elem.classList.add(clazz);
+    }
+    // if(clazz) elem.className = clazz;
     return elem;
 }
 
-export function createInput(type: string, clazz?: string) {
-    const elem = createElement("input", clazz);
+export function createInput(type: string, ...clazzes: string[]) {
+    const elem = createElement("input", ...clazzes);
     elem.type = type;
     return elem;
 }
 
-export function createDiv(clazz?: string) {
-    return createElement("div", clazz);
+export function createDiv(...clazzes: string[]) {
+    return createElement("div", ...clazzes);
 }
 
-export function createPElem(content: string, clazz?: string) {
-    const elem = createElement("p", clazz);
+export function createPElem(content: string, ...clazzes: string[]) {
+    const elem = createElement("p", ...clazzes);
     elem.textContent = content;
     return elem;
 }
@@ -31,8 +34,10 @@ export function removeChildren(elem: HTMLElement) {
     }
 }
 
+// mutable reference to allow referencing before defined
 export var canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
 export const chatBox = document.getElementById("chatBox") as HTMLInputElement;
+export const chatHolder = document.getElementById("chatHolder") as HTMLDivElement;
 
 export var mouseDir: number;
 

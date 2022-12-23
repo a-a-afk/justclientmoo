@@ -7,7 +7,7 @@ import { formatString } from "./utils/stringutils";
 
 var notifs: HTMLDivElement[] = [];
 
-export function addNotif(notifName: string, isError = false) {
+export function addNotif(notifName: string, isError?: boolean, noChat?: boolean) {
     const div = createDiv("notifDiv");
     const textElem = createPElem(formatString(notifName));
 
@@ -23,12 +23,12 @@ export function addNotif(notifName: string, isError = false) {
 
     notifs.unshift(div);
 
-    if((moduleManager.getModule("notifs") as NotificationModule).chatNotifs.val) api.sendBasic(MooMooAPI.C2SPacketType.CHAT, notifName);
+    if((moduleManager.getModule("notifs") as NotificationModule).chatNotifs.val && !noChat) api.sendBasic(MooMooAPI.C2SPacketType.CHAT, notifName);
     refreshNotifs();
     
     setTimeout(() => {
-        //maybe just pop?
         div.style.right = "-100px";
+        div.style.opacity = "0";
         setTimeout(() => {
             div.remove();
         }, 650);

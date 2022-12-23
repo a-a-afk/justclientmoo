@@ -1,1 +1,1 @@
-export const holderVar: string;
+export const expVar: string;

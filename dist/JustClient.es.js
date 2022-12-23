@@ -4,66 +4,6 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-var C2SPacketType$1 = /* @__PURE__ */ ((C2SPacketType2) => {
-  C2SPacketType2["SPAWN"] = "sp";
-  C2SPacketType2["CHAT"] = "ch";
-  C2SPacketType2["ATTACK"] = "c";
-  C2SPacketType2["PING"] = "pp";
-  C2SPacketType2["SET_ANGLE"] = "2";
-  C2SPacketType2["SELECT_ITEM"] = "5";
-  C2SPacketType2["UPGRADE"] = "6";
-  C2SPacketType2["SET_ATTACK_STATE"] = "7";
-  C2SPacketType2["CREATE_TRIBE"] = "8";
-  C2SPacketType2["LEAVE_TRIBE"] = "9";
-  C2SPacketType2["REQUEST_JOIN_TRIBE"] = "10";
-  C2SPacketType2["ACCEPT_TRIBE_REQUEST"] = "11";
-  C2SPacketType2["KICK_FROM_TRIBE"] = "12";
-  C2SPacketType2["BUY_AND_EQUIP"] = "13c";
-  C2SPacketType2["PING_MAP"] = "14";
-  C2SPacketType2["MOVE"] = "33";
-  return C2SPacketType2;
-})(C2SPacketType$1 || {});
-var S2CPacketType$1 = /* @__PURE__ */ ((S2CPacketType2) => {
-  S2CPacketType2["ANNOUNCE"] = "ann";
-  S2CPacketType2["INIT"] = "io-init";
-  S2CPacketType2["INIT_TRIBES"] = "id";
-  S2CPacketType2["SET_SID"] = "1";
-  S2CPacketType2["KICK"] = "d";
-  S2CPacketType2["ADD_PLAYER"] = "2";
-  S2CPacketType2["UPDAE_PLAYERS"] = "33";
-  S2CPacketType2["REMOVE_PLAYER"] = "4";
-  S2CPacketType2["UPDATE_LEADER_BOARD"] = "5";
-  S2CPacketType2["ADD_OBJECT"] = "6";
-  S2CPacketType2["UPDATE_AIS"] = "a";
-  S2CPacketType2["PLAYER_SWING"] = "7";
-  S2CPacketType2["MOOSTAFA_SWING"] = "aa";
-  S2CPacketType2["WIGGLE"] = "8";
-  S2CPacketType2["SHOOT_TURRET"] = "sp";
-  S2CPacketType2["UPDATE_MATS"] = "9";
-  S2CPacketType2["HEALTH"] = "h";
-  S2CPacketType2["DEATH"] = "11";
-  S2CPacketType2["REMOVE_OBJECT"] = "12";
-  S2CPacketType2["REMOVE_ALL_OBJECTS"] = "13";
-  S2CPacketType2["SET_ITEM_COUNT"] = "14";
-  S2CPacketType2["SET_AGE"] = "15";
-  S2CPacketType2["LIST_UPGRADES"] = "16";
-  S2CPacketType2["SET_ITEMS_BAR"] = "17";
-  S2CPacketType2["ADD_PROJECTILE"] = "18";
-  S2CPacketType2["REMOVE_PROJECTILE"] = "19";
-  S2CPacketType2["SERVER_RESTART"] = "20";
-  S2CPacketType2["ADD_TRIBE"] = "ac";
-  S2CPacketType2["DELETE_TRIBE"] = "ad";
-  S2CPacketType2["REQUEST_JOIN_TRIBE"] = "an";
-  S2CPacketType2["SET_TRIBE"] = "st";
-  S2CPacketType2["SET_TRIBE_MEMBERS"] = "sa";
-  S2CPacketType2["MINIMAP_LOCATIONS"] = "mm";
-  S2CPacketType2["CHAT"] = "ch";
-  S2CPacketType2["UPDATE_SHOP"] = "us";
-  S2CPacketType2["PING"] = "pp";
-  S2CPacketType2["DAMAGE_TEST"] = "t";
-  S2CPacketType2["PING_MAP"] = "p";
-  return S2CPacketType2;
-})(S2CPacketType$1 || {});
 class Evt {
   constructor(eventName) {
     this.eventName = eventName;
@@ -204,7 +144,7 @@ var S2CPacketType;
   S2CPacketType2["DAMAGE_TEST"] = "t";
   S2CPacketType2["PING_MAP"] = "p";
 })(S2CPacketType || (S2CPacketType = {}));
-var ItemIds$1;
+var ItemIds;
 (function(ItemIds2) {
   ItemIds2[ItemIds2["APPLE"] = 0] = "APPLE";
   ItemIds2[ItemIds2["COOKIE"] = 1] = "COOKIE";
@@ -229,8 +169,8 @@ var ItemIds$1;
   ItemIds2[ItemIds2["SPAWN_PAD"] = 20] = "SPAWN_PAD";
   ItemIds2[ItemIds2["BLOCKER"] = 21] = "BLOCKER";
   ItemIds2[ItemIds2["TELEPORTER"] = 22] = "TELEPORTER";
-})(ItemIds$1 || (ItemIds$1 = {}));
-var WeaponIds$1;
+})(ItemIds || (ItemIds = {}));
+var WeaponIds;
 (function(WeaponIds2) {
   WeaponIds2[WeaponIds2["TOOL_HAMMER"] = 0] = "TOOL_HAMMER";
   WeaponIds2[WeaponIds2["HAND_AXE"] = 1] = "HAND_AXE";
@@ -248,7 +188,7 @@ var WeaponIds$1;
   WeaponIds2[WeaponIds2["REPEATER_CROSSBOW"] = 13] = "REPEATER_CROSSBOW";
   WeaponIds2[WeaponIds2["MC_GRABBY"] = 14] = "MC_GRABBY";
   WeaponIds2[WeaponIds2["MUSKET"] = 15] = "MUSKET";
-})(WeaponIds$1 || (WeaponIds$1 = {}));
+})(WeaponIds || (WeaponIds = {}));
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 var src = {};
 var mathplus = {};
@@ -354,7 +294,7 @@ class Pos extends PrimitivePos {
       return this.add(-x, -(y || 0));
   }
   toString() {
-    return `X: ${this.x} Y: ${this.y}`;
+    return `{X: ${this.x}, Y: ${this.y}}`;
   }
   asPrimitive() {
     return new PrimitivePos(this.x, this.y);
@@ -372,6 +312,15 @@ class Pos extends PrimitivePos {
   }
   equals(pos) {
     return this.x == pos.x && this.y == pos.y;
+  }
+  mult(pos) {
+    return new Pos(this.x * pos.x, this.y * pos.y);
+  }
+  multBy(amt) {
+    return new Pos(this.x * amt, this.y * amt);
+  }
+  div(pos) {
+    return new Pos(this.x / pos.x, this.y / pos.y);
   }
 }
 Pos_1 = src.Pos = Pos;
@@ -419,8 +368,8 @@ class Player extends Pos_1 {
 class SelfPlayer extends Player {
   constructor() {
     super(...arguments);
-    this.weapons = [WeaponIds$1.TOOL_HAMMER, void 0];
-    this.items = [ItemIds$1.APPLE, ItemIds$1.WOOD_WALL, ItemIds$1.SPIKE, ItemIds$1.WINDMILL, void 0, void 0, void 0, void 0];
+    this.weapons = [WeaponIds.TOOL_HAMMER, void 0];
+    this.items = [ItemIds.APPLE, ItemIds.WOOD_WALL, ItemIds.SPIKE, ItemIds.WINDMILL, void 0, void 0, void 0, void 0];
   }
   getFoodType() {
     return this.items[0];
@@ -442,13 +391,13 @@ class SelfPlayer extends Player {
     return null;
   }
   getSapplingType() {
-    return this.searchForId(ItemIds$1.SAPPLING);
+    return this.searchForId(ItemIds.SAPPLING);
   }
   getMineType() {
-    return this.searchForId(ItemIds$1.MINE);
+    return this.searchForId(ItemIds.MINE);
   }
   getSpecialType() {
-    return this.searchForId(ItemIds$1.TURRET) || this.searchForId(ItemIds$1.BLOCKER) || this.searchForId(ItemIds$1.HEALING_PAD) || this.searchForId(ItemIds$1.PLATFORM) || this.searchForId(ItemIds$1.TELEPORTER);
+    return this.searchForId(ItemIds.TURRET) || this.searchForId(ItemIds.BLOCKER) || this.searchForId(ItemIds.HEALING_PAD) || this.searchForId(ItemIds.PLATFORM) || this.searchForId(ItemIds.TELEPORTER);
   }
   getPadType() {
     return this.items[4] || null;
@@ -2270,7 +2219,6 @@ Decoder.prototype.end = function(chunk) {
   this.decode(chunk);
   this.emit("end");
 };
-codecBase.createCodec;
 ({
   preset: codecBase.preset
 });
@@ -2290,7 +2238,7 @@ var SkinColours;
   SkinColours2[SkinColours2["GREEN"] = 9] = "GREEN";
   SkinColours2["SECRETLIGHTBLUE"] = "length";
 })(SkinColours || (SkinColours = {}));
-class Repeater$1 {
+class Repeater {
   constructor(cb, msInterval, code) {
     this.cb = cb;
     this.msInterval = msInterval;
@@ -2310,9 +2258,9 @@ class Repeater$1 {
   }
 }
 class GameObject extends Pos_1 {
-  constructor(id, x, y, dir, scale, type, buildType, ownerSid) {
+  constructor(sid, x, y, dir, scale, type, buildType, ownerSid) {
     super(x, y);
-    this.id = id;
+    this.sid = sid;
     this.dir = dir;
     this.scale = scale;
     this.type = type;
@@ -2325,7 +2273,7 @@ var ObjectRemoveReason;
   ObjectRemoveReason2[ObjectRemoveReason2["PLAYERLEAVE"] = 0] = "PLAYERLEAVE";
   ObjectRemoveReason2[ObjectRemoveReason2["BUILDINGBREAK"] = 1] = "BUILDINGBREAK";
 })(ObjectRemoveReason || (ObjectRemoveReason = {}));
-var HatIds$1;
+var HatIds;
 (function(HatIds2) {
   HatIds2[HatIds2["SHAME"] = 45] = "SHAME";
   HatIds2[HatIds2["MOO_CAP"] = 51] = "MOO_CAP";
@@ -2344,7 +2292,7 @@ var HatIds$1;
   HatIds2[HatIds2["PUMPKIN"] = 57] = "PUMPKIN";
   HatIds2[HatIds2["BUMMLE_HAT"] = 8] = "BUMMLE_HAT";
   HatIds2[HatIds2["STRAW_HAT"] = 2] = "STRAW_HAT";
-  HatIds2[HatIds2["WINTER_CAP"] = 15] = "WINTER_CAP";
+  HatIds2[HatIds2["WINTER_CAP"] = 16] = "WINTER_CAP";
   HatIds2[HatIds2["COWBOY_HAT"] = 5] = "COWBOY_HAT";
   HatIds2[HatIds2["RANGER_HAT"] = 4] = "RANGER_HAT";
   HatIds2[HatIds2["EXPLORER_HAT"] = 18] = "EXPLORER_HAT";
@@ -2373,7 +2321,8 @@ var HatIds$1;
   HatIds2[HatIds2["THIEF_GEAR"] = 40] = "THIEF_GEAR";
   HatIds2[HatIds2["BLOODTHIRSTER"] = 55] = "BLOODTHIRSTER";
   HatIds2[HatIds2["Assassin_GEAR"] = 56] = "Assassin_GEAR";
-})(HatIds$1 || (HatIds$1 = {}));
+  HatIds2[HatIds2["NONE"] = 0] = "NONE";
+})(HatIds || (HatIds = {}));
 const hats$1 = [{
   id: 45,
   name: "Shame!",
@@ -2478,7 +2427,7 @@ const hats$1 = [{
   scale: 120,
   desc: "no effect"
 }, {
-  id: 15,
+  id: 16,
   name: "Winter Cap",
   price: 600,
   scale: 120,
@@ -2693,7 +2642,7 @@ const hats$1 = [{
   spdMult: 1.1,
   invisTimer: 1e3
 }];
-var AccessoryIds$1;
+var AccessoryIds;
 (function(AccessoryIds2) {
   AccessoryIds2[AccessoryIds2["SNOWBALL"] = 12] = "SNOWBALL";
   AccessoryIds2[AccessoryIds2["TREE_CAPE"] = 9] = "TREE_CAPE";
@@ -2716,7 +2665,8 @@ var AccessoryIds$1;
   AccessoryIds2[AccessoryIds2["SHADOW_WINGS"] = 19] = "SHADOW_WINGS";
   AccessoryIds2[AccessoryIds2["BLOOD_WINGS"] = 18] = "BLOOD_WINGS";
   AccessoryIds2[AccessoryIds2["CORRUPT_X_WINGS"] = 21] = "CORRUPT_X_WINGS";
-})(AccessoryIds$1 || (AccessoryIds$1 = {}));
+  AccessoryIds2[AccessoryIds2["NONE"] = 0] = "NONE";
+})(AccessoryIds || (AccessoryIds = {}));
 const accessories = [{
   id: 12,
   name: "Snowball",
@@ -2888,9 +2838,6 @@ class Projectile {
     return new Pos_1(this.x, this.y);
   }
 }
-var out = {};
-Object.defineProperty(out, "__esModule", { value: true });
-var EventEmitter_1 = out.EventEmitter = void 0;
 class EventData {
   constructor(name, cb, once = false) {
     __publicField(this, "name");
@@ -2907,17 +2854,23 @@ class EventEmitter {
   }
   on(type, cb) {
     this.events.push(new EventData(type, cb));
+    return cb;
   }
   once(type, cb) {
     this.events.push(new EventData(type, cb, true));
+    return cb;
   }
   emit(type, arg) {
-    this.events.filter((evt) => {
+    for (let i2 = 0; i2 < this.events.length; i2++) {
+      const evt = this.events[i2];
       if (evt.name != type)
-        return true;
+        continue;
       evt.cb(arg);
-      return !evt.once;
-    });
+      if (evt.once) {
+        this.events.splice(i2, 1);
+        i2--;
+      }
+    }
   }
   removeEvent(type, cb) {
     this.events.forEach((e) => {
@@ -2926,10 +2879,26 @@ class EventEmitter {
       }
     });
   }
+  off(type, cb) {
+    this.events.forEach((e) => {
+      if (e.name == type && e.cb == cb) {
+        e.once = true;
+      }
+    });
+  }
+  wait(type) {
+    return new Promise((res) => {
+      const fn = (e) => {
+        res(e);
+      };
+      this.on(type, fn);
+      this.off(type, fn);
+    });
+  }
 }
-EventEmitter_1 = out.EventEmitter = EventEmitter;
+var out = EventEmitter;
 var lastTime = Date.now();
-const _MooMooAPI = class extends EventEmitter_1 {
+const _MooMooAPI = class extends out {
   constructor(dynws = false) {
     super();
     this.socket = null;
@@ -3088,18 +3057,18 @@ const _MooMooAPI = class extends EventEmitter_1 {
         case S2CPacketType.REMOVE_OBJECT:
           for (let i2 = 0; i2 < this.gameObjects.length; i2++) {
             const ind = this.gameObjects[i2];
-            if (ind.ownerSid == payload[0]) {
+            if (ind.sid == payload[0]) {
+              this.gameObjects.splice(i2, 1);
               this.emit("removeObject", new ObjectRemoveEvent(ind, ObjectRemoveReason.BUILDINGBREAK));
             }
           }
-          delete this.gameObjects[payload[0]];
           break;
         case S2CPacketType.REMOVE_ALL_OBJECTS:
           for (let i2 = 0; i2 < this.gameObjects.length; i2++) {
             const ind = this.gameObjects[i2];
             if (ind.ownerSid == payload[0]) {
               this.emit("removeObject", new ObjectRemoveEvent(ind, ObjectRemoveReason.PLAYERLEAVE));
-              this.gameObjects.slice(i2, 1);
+              this.gameObjects.splice(i2, 1);
             }
           }
           break;
@@ -3114,8 +3083,8 @@ const _MooMooAPI = class extends EventEmitter_1 {
           break;
         case S2CPacketType.DEATH:
           this.isAutoAtk = false;
-          this.player.weapons = [WeaponIds$1.TOOL_HAMMER, void 0];
-          this.player.items = [ItemIds$1.APPLE, ItemIds$1.WOOD_WALL, ItemIds$1.SPIKE, ItemIds$1.WINDMILL, void 0, void 0, void 0, void 0];
+          this.player.weapons = [WeaponIds.TOOL_HAMMER, void 0];
+          this.player.items = [ItemIds.APPLE, ItemIds.WOOD_WALL, ItemIds.SPIKE, ItemIds.WINDMILL, void 0, void 0, void 0, void 0];
           break;
         case S2CPacketType.CHAT:
           const sidMsg = payload[0];
@@ -3259,22 +3228,22 @@ let MooMooAPI = _MooMooAPI;
   _MooMooAPI.ObjectRemoveReason = ObjectRemoveReason;
 })();
 (() => {
-  _MooMooAPI.ItemIds = ItemIds$1;
+  _MooMooAPI.ItemIds = ItemIds;
 })();
 (() => {
-  _MooMooAPI.WeaponIds = WeaponIds$1;
+  _MooMooAPI.WeaponIds = WeaponIds;
 })();
 (() => {
-  _MooMooAPI.Repeater = Repeater$1;
+  _MooMooAPI.Repeater = Repeater;
 })();
 (() => {
   _MooMooAPI.msgpack = { encode, decode };
 })();
 (() => {
-  _MooMooAPI.HatIds = HatIds$1;
+  _MooMooAPI.HatIds = HatIds;
 })();
 (() => {
-  _MooMooAPI.AccessoryIds = AccessoryIds$1;
+  _MooMooAPI.AccessoryIds = AccessoryIds;
 })();
 Object.defineProperty(window, "MooMooAPI", {
   value: MooMooAPI
@@ -3283,8 +3252,14 @@ const clientKey = "justclient";
 const defaultDat = {
   curConfig: {
     modules: [],
-    menuPos: {}
+    menuPos: {},
+    info: {
+      name: "Default Config",
+      author: "Default Author",
+      desc: "Default Description"
+    }
   },
+  otherConfigs: [],
   version: "0.0.0",
   isDev: true
 };
@@ -3342,22 +3317,23 @@ function initStorage() {
   }
   allowSaving = true;
 }
-function createElement(name, clazz) {
+function createElement(name, ...clazzes) {
   const elem = document.createElement(name);
-  if (clazz)
-    elem.className = clazz;
+  for (const clazz of clazzes) {
+    elem.classList.add(clazz);
+  }
   return elem;
 }
-function createInput(type, clazz) {
-  const elem = createElement("input", clazz);
+function createInput(type, ...clazzes) {
+  const elem = createElement("input", ...clazzes);
   elem.type = type;
   return elem;
 }
-function createDiv(clazz) {
-  return createElement("div", clazz);
+function createDiv(...clazzes) {
+  return createElement("div", ...clazzes);
 }
-function createPElem(content, clazz) {
-  const elem = createElement("p", clazz);
+function createPElem(content, ...clazzes) {
+  const elem = createElement("p", ...clazzes);
   elem.textContent = content;
   return elem;
 }
@@ -3368,6 +3344,7 @@ function removeChildren(elem) {
 }
 var canvas = document.getElementById("gameCanvas");
 const chatBox = document.getElementById("chatBox");
+const chatHolder = document.getElementById("chatHolder");
 var mouseDir;
 canvas.addEventListener("mousemove", (e) => {
   mouseDir = Math.atan2(e.clientY - canvas.height / 2, e.clientX - canvas.width / 2);
@@ -3425,7 +3402,7 @@ function formatString(str2) {
   return str2.replaceAll("%PREFIX%", commandPrefix).replaceAll("%PLAYER%", (player2 == null ? void 0 : player2.name) || "No Player");
 }
 var notifs = [];
-function addNotif(notifName, isError = false) {
+function addNotif(notifName, isError, noChat) {
   const div = createDiv("notifDiv");
   const textElem = createPElem(formatString(notifName));
   div.append(textElem);
@@ -3436,11 +3413,12 @@ function addNotif(notifName, isError = false) {
     div.style.right = "0px";
   });
   notifs.unshift(div);
-  if (moduleManager.getModule("notifs").chatNotifs.val)
+  if (moduleManager.getModule("notifs").chatNotifs.val && !noChat)
     api.sendBasic(MooMooAPI.C2SPacketType.CHAT, notifName);
   refreshNotifs();
   setTimeout(() => {
     div.style.right = "-100px";
+    div.style.opacity = "0";
     setTimeout(() => {
       div.remove();
     }, 650);
@@ -3498,63 +3476,14 @@ function buildingToPos(building) {
   return new Pos_1(building.x, building.y);
 }
 class ErInf {
-  info(notif) {
-    addNotif(notif);
+  info(notif, noChat) {
+    addNotif(notif, false, noChat);
   }
   error(notif) {
     addNotif(notif, true);
   }
 }
-var HatIds = /* @__PURE__ */ ((HatIds2) => {
-  HatIds2[HatIds2["SHAME"] = 45] = "SHAME";
-  HatIds2[HatIds2["MOO_CAP"] = 51] = "MOO_CAP";
-  HatIds2[HatIds2["APPLE_CAP"] = 50] = "APPLE_CAP";
-  HatIds2[HatIds2["MOO_HEAD"] = 28] = "MOO_HEAD";
-  HatIds2[HatIds2["PIG_HEAD"] = 29] = "PIG_HEAD";
-  HatIds2[HatIds2["FLUFF_HEAD"] = 30] = "FLUFF_HEAD";
-  HatIds2[HatIds2["PANDOU_HEAD"] = 36] = "PANDOU_HEAD";
-  HatIds2[HatIds2["BEAR_HEAD"] = 37] = "BEAR_HEAD";
-  HatIds2[HatIds2["MONKEY_HEAD"] = 38] = "MONKEY_HEAD";
-  HatIds2[HatIds2["POLAR_HEAD"] = 44] = "POLAR_HEAD";
-  HatIds2[HatIds2["FEZ_HAT"] = 35] = "FEZ_HAT";
-  HatIds2[HatIds2["ENIGMA_HAT"] = 42] = "ENIGMA_HAT";
-  HatIds2[HatIds2["BLITZ_HAT"] = 43] = "BLITZ_HAT";
-  HatIds2[HatIds2["BOB_XIII_HAT"] = 49] = "BOB_XIII_HAT";
-  HatIds2[HatIds2["PUMPKIN"] = 57] = "PUMPKIN";
-  HatIds2[HatIds2["BUMMLE_HAT"] = 8] = "BUMMLE_HAT";
-  HatIds2[HatIds2["STRAW_HAT"] = 2] = "STRAW_HAT";
-  HatIds2[HatIds2["WINTER_CAP"] = 15] = "WINTER_CAP";
-  HatIds2[HatIds2["COWBOY_HAT"] = 5] = "COWBOY_HAT";
-  HatIds2[HatIds2["RANGER_HAT"] = 4] = "RANGER_HAT";
-  HatIds2[HatIds2["EXPLORER_HAT"] = 18] = "EXPLORER_HAT";
-  HatIds2[HatIds2["FLIPPER_HAT"] = 31] = "FLIPPER_HAT";
-  HatIds2[HatIds2["MARKSMAN_CAP"] = 1] = "MARKSMAN_CAP";
-  HatIds2[HatIds2["BUSH_GEAR"] = 10] = "BUSH_GEAR";
-  HatIds2[HatIds2["HALO"] = 48] = "HALO";
-  HatIds2[HatIds2["SOLDIER_HELMET"] = 6] = "SOLDIER_HELMET";
-  HatIds2[HatIds2["ANTI_VENOM_GEAR"] = 23] = "ANTI_VENOM_GEAR";
-  HatIds2[HatIds2["MEDIC_GEAR"] = 13] = "MEDIC_GEAR";
-  HatIds2[HatIds2["MINERS_HELMET"] = 9] = "MINERS_HELMET";
-  HatIds2[HatIds2["MUSKETEER_HAT"] = 32] = "MUSKETEER_HAT";
-  HatIds2[HatIds2["BULL_HELMET"] = 7] = "BULL_HELMET";
-  HatIds2[HatIds2["EMP_HELMET"] = 22] = "EMP_HELMET";
-  HatIds2[HatIds2["BOOSTER_HAT"] = 12] = "BOOSTER_HAT";
-  HatIds2[HatIds2["BARBARIAN_ARMOR"] = 26] = "BARBARIAN_ARMOR";
-  HatIds2[HatIds2["PLAGUE_MASK"] = 21] = "PLAGUE_MASK";
-  HatIds2[HatIds2["BULL_MASK"] = 46] = "BULL_MASK";
-  HatIds2[HatIds2["WINDMILL_HAT"] = 14] = "WINDMILL_HAT";
-  HatIds2[HatIds2["SPIKE_GEAR"] = 11] = "SPIKE_GEAR";
-  HatIds2[HatIds2["TURRET_GEAR"] = 53] = "TURRET_GEAR";
-  HatIds2[HatIds2["SAMURAI_ARMOR"] = 20] = "SAMURAI_ARMOR";
-  HatIds2[HatIds2["DARK_KNIGHT"] = 58] = "DARK_KNIGHT";
-  HatIds2[HatIds2["SCAVENGER_GEAR"] = 27] = "SCAVENGER_GEAR";
-  HatIds2[HatIds2["TANK_GEAR"] = 40] = "TANK_GEAR";
-  HatIds2[HatIds2["THIEF_GEAR"] = 40] = "THIEF_GEAR";
-  HatIds2[HatIds2["BLOODTHIRSTER"] = 55] = "BLOODTHIRSTER";
-  HatIds2[HatIds2["Assassin_GEAR"] = 56] = "Assassin_GEAR";
-  return HatIds2;
-})(HatIds || {});
-class Setting extends EventEmitter_1 {
+class Setting extends out {
   constructor(name, defaultVal, desc = "", module) {
     super();
     this.name = name;
@@ -3562,6 +3491,7 @@ class Setting extends EventEmitter_1 {
     this.desc = desc;
     this.module = module;
     this.settingCategory = null;
+    this.req = null;
     this.val = defaultVal;
   }
   set(val) {
@@ -3582,6 +3512,13 @@ class Setting extends EventEmitter_1 {
   }
   asStr() {
     return this.val.toString();
+  }
+  requires(setting, requireVal) {
+    this.req = {
+      otherSetting: setting,
+      toBeVal: requireVal
+    };
+    return this;
   }
 }
 class NumSetting extends Setting {
@@ -3728,8 +3665,8 @@ class Module extends ErInf {
       this.toggleOnRelease.set(true);
     this.save();
   }
-  info(notif) {
-    super.info(`[${this.name}] ${notif}`);
+  info(notif, noChat) {
+    super.info(`[${this.name}] ${notif}`, noChat);
   }
   error(notif) {
     super.error(`[${this.name}] ${notif}`);
@@ -3847,7 +3784,7 @@ class ModuleManager {
   }
   addMod(moduleType) {
     if (this.moduleMap.has(moduleType))
-      return;
+      throw new Error(`Module ${moduleType.constructor.name} already registered`);
     const modObj = new moduleType();
     if (modObj.name == "gearsettings") {
       gearSettingModule = modObj;
@@ -3892,7 +3829,7 @@ window.addEventListener("contextmenu", (e) => {
 guiHolder.appendChild(moduleDiv);
 const categoryDivs = /* @__PURE__ */ new Map();
 function getBindSettingStr(setting) {
-  return `BIND: ${setting.val}`;
+  return `BIND: ${setting.val || "NONE"}`;
 }
 const _GuiModule = class extends Module {
   constructor() {
@@ -3919,16 +3856,26 @@ const _GuiModule = class extends Module {
   }
   renderGui(module) {
     const guiDiv = createDiv("dispGui");
-    const nameDiv = createDiv("settingDiv");
-    nameDiv.textContent = module.name;
+    const nameDiv = createDiv("settingDiv", "setTitle");
+    nameDiv.textContent = `${module.name} : ${module.desc}`;
     guiDiv.append(nameDiv);
     for (const setting of module.settings) {
       const settingDiv = createDiv("settingDiv");
       settingDiv.title = setting.desc;
       const settingName = createDiv("settingContent");
-      settingName.textContent = `${setting.name}:`;
+      settingName.textContent = `${setting.name} : ${setting.desc}`;
       settingDiv.appendChild(settingName);
       const settingElmHolder = createDiv("settingContent");
+      if (setting.req) {
+        setting.req.otherSetting.on("change", (val) => {
+          var _a;
+          if (val == ((_a = setting.req) == null ? void 0 : _a.toBeVal)) {
+            settingDiv.style.display = "grid";
+          } else {
+            settingDiv.style.display = "none";
+          }
+        });
+      }
       if (setting instanceof BoolSetting) {
         const settingElm = createInput("checkbox", "settingContent");
         settingElm.checked = setting.val;
@@ -3943,16 +3890,25 @@ const _GuiModule = class extends Module {
         };
         settingElmHolder.appendChild(settingElm);
       } else if (setting instanceof BindSetting) {
-        const settingElm = createElement("button", "settingContent");
+        const settingElm = createElement("button", "settingContent", "bindBtn");
         settingElm.textContent = getBindSettingStr(setting);
-        settingElm.onclick = () => {
-          if (_GuiModule.bindingSetting != setting) {
-            _GuiModule.bindingSetting = setting;
-            _GuiModule.bindingSettingElm = settingElm;
-            settingElm.textContent = "BIND: BINDING";
-          } else {
-            _GuiModule.bindingSetting = null;
+        settingElm.onmousedown = (e) => {
+          if (e.button == 2) {
+            if (_GuiModule.bindingSetting == setting) {
+              _GuiModule.bindingSetting = null;
+            }
+            setting.set("");
+            setting.save();
             settingElm.textContent = getBindSettingStr(setting);
+          } else {
+            if (_GuiModule.bindingSetting != setting) {
+              _GuiModule.bindingSetting = setting;
+              _GuiModule.bindingSettingElm = settingElm;
+              settingElm.textContent = "BIND: BINDING";
+            } else {
+              _GuiModule.bindingSetting = null;
+              settingElm.textContent = getBindSettingStr(setting);
+            }
           }
         };
         settingElmHolder.appendChild(settingElm);
@@ -3961,9 +3917,9 @@ const _GuiModule = class extends Module {
         settingElm.min = setting.minVal.toString();
         settingElm.max = setting.maxVal.toString();
         settingElm.value = setting.val.toString();
-        settingName.textContent = `${setting.name}: ${settingElm.value}`;
+        settingName.textContent = `${setting.name} : ${settingElm.value} : ${setting.desc}`;
         settingElm.oninput = () => {
-          settingName.textContent = `${setting.name}: ${settingElm.value}`;
+          settingName.textContent = `${setting.name} : ${settingElm.value} : ${setting.desc}`;
           setting.set(settingElm.value);
         };
         settingElmHolder.appendChild(settingElm);
@@ -4008,15 +3964,22 @@ const _GuiModule = class extends Module {
     return guiDiv;
   }
   onPostInit() {
-    var _a;
+    var _a, _b;
     function setExpanded(categoryDiv, exp, cat) {
-      console.log(exp);
       for (const child of Array.from(categoryDiv.children)) {
         if (child.tagName == "DIV") {
           child.style.display = exp ? "block" : "none";
         }
       }
       categoryDiv.setAttribute("expanded", exp.toString());
+      if (!storageDat.curConfig.menuPos[cat]) {
+        storageDat.curConfig.menuPos[cat] = {
+          left: 0,
+          top: 0,
+          category: cat,
+          expanded: true
+        };
+      }
       storageDat.curConfig.menuPos[cat].expanded = JSON.parse(categoryDiv.getAttribute("expanded"));
       setStorage();
     }
@@ -4064,7 +4027,7 @@ const _GuiModule = class extends Module {
         }
       });
       makeDraggable(catDiv, module.category);
-      setExpanded(catDiv, (_a = storageDat.curConfig.menuPos[module.category].expanded) != null ? _a : true, module.category);
+      setExpanded(catDiv, (_b = (_a = storageDat.curConfig.menuPos[module.category]) == null ? void 0 : _a.expanded) != null ? _b : true, module.category);
     }
     for (const catDiv of categoryDivs.values()) {
       guiHolder.appendChild(catDiv);
@@ -4076,7 +4039,7 @@ const _GuiModule = class extends Module {
 };
 let GuiModule = _GuiModule;
 GuiModule.bindingSetting = null;
-class JustClientEvents extends EventEmitter_1 {
+class JustClientEvents extends out {
 }
 var api = new MooMooAPI();
 var moduleManager = new ModuleManager();
@@ -4085,7 +4048,7 @@ var justEvents = new JustClientEvents();
 const keysDown = {};
 const repeaters = [];
 document.addEventListener("keydown", (e) => {
-  if (chatBox.style.display == "block")
+  if (chatHolder.style.display == "block")
     return;
   repeaters.forEach((rep) => {
     rep.start(e.code);
@@ -4109,7 +4072,7 @@ function addRepeater(repeater) {
   repeaters.push(repeater);
 }
 document.addEventListener("keyup", (e) => {
-  if (chatBox.style.display == "block")
+  if (chatHolder.style.display == "block")
     return;
   keysDown[e.code] = false;
   repeaters.forEach((rep) => {
@@ -4129,7 +4092,7 @@ function addCommand(command) {
   commands.push(new command());
 }
 api.on("packetSend", (e) => {
-  if (e.type == C2SPacketType$1.CHAT) {
+  if (e.type == C2SPacketType.CHAT) {
     const message = e.payload[0];
     if (message.startsWith(commandPrefix)) {
       e.isCanceled = true;
@@ -4144,7 +4107,7 @@ api.on("packetSend", (e) => {
       }
       addNotif("command not found!");
     }
-  } else if (e.type == C2SPacketType$1.SET_ANGLE) {
+  } else if (e.type == C2SPacketType.SET_ANGLE) {
     justEvents.emit("sendSetDir", e.payload[0]);
   }
 });
@@ -4237,13 +4200,13 @@ class UpgradeCommand extends Command {
   }
   km() {
     for (const id of [7, 17, 31, 23, 10, 38, 4, 15]) {
-      api.sendBasic(C2SPacketType$1.UPGRADE, id);
+      api.sendBasic(C2SPacketType.UPGRADE, id);
     }
     this.info("KM upgrades obtained");
   }
   pm() {
     for (const id of [5, 17, 31, 23, 9, 38, 28, 15]) {
-      api.sendBasic(C2SPacketType$1.UPGRADE, id);
+      api.sendBasic(C2SPacketType.UPGRADE, id);
     }
     this.info("PM upgrades obtained");
   }
@@ -4259,32 +4222,6 @@ class NotificationModule extends Module {
     this.chatNotifs = this.addBool("chatnotify", false, "notifies modules toggled in chat");
   }
 }
-var ItemIds = /* @__PURE__ */ ((ItemIds2) => {
-  ItemIds2[ItemIds2["APPLE"] = 0] = "APPLE";
-  ItemIds2[ItemIds2["COOKIE"] = 1] = "COOKIE";
-  ItemIds2[ItemIds2["CHEESE"] = 2] = "CHEESE";
-  ItemIds2[ItemIds2["WOOD_WALL"] = 3] = "WOOD_WALL";
-  ItemIds2[ItemIds2["STONE_WALL"] = 4] = "STONE_WALL";
-  ItemIds2[ItemIds2["CASTLE_WALL"] = 5] = "CASTLE_WALL";
-  ItemIds2[ItemIds2["SPIKE"] = 6] = "SPIKE";
-  ItemIds2[ItemIds2["GREATER_SPIKE"] = 7] = "GREATER_SPIKE";
-  ItemIds2[ItemIds2["POISON_SPIKE"] = 8] = "POISON_SPIKE";
-  ItemIds2[ItemIds2["SPINNING_SPIKE"] = 9] = "SPINNING_SPIKE";
-  ItemIds2[ItemIds2["WINDMILL"] = 10] = "WINDMILL";
-  ItemIds2[ItemIds2["FASTER_WINDMILL"] = 11] = "FASTER_WINDMILL";
-  ItemIds2[ItemIds2["POWER_MILL"] = 12] = "POWER_MILL";
-  ItemIds2[ItemIds2["MINE"] = 13] = "MINE";
-  ItemIds2[ItemIds2["SAPPLING"] = 14] = "SAPPLING";
-  ItemIds2[ItemIds2["PIT_TRAP"] = 15] = "PIT_TRAP";
-  ItemIds2[ItemIds2["BOOST_PAD"] = 16] = "BOOST_PAD";
-  ItemIds2[ItemIds2["TURRET"] = 17] = "TURRET";
-  ItemIds2[ItemIds2["PLATFORM"] = 18] = "PLATFORM";
-  ItemIds2[ItemIds2["HEALING_PAD"] = 19] = "HEALING_PAD";
-  ItemIds2[ItemIds2["SPAWN_PAD"] = 20] = "SPAWN_PAD";
-  ItemIds2[ItemIds2["BLOCKER"] = 21] = "BLOCKER";
-  ItemIds2[ItemIds2["TELEPORTER"] = 22] = "TELEPORTER";
-  return ItemIds2;
-})(ItemIds || {});
 function getFoodType() {
   return player.getFoodType();
 }
@@ -4358,12 +4295,12 @@ function defendTrap(id, incr) {
 }
 var angleToEnemy = 0;
 function setDir(dir) {
-  api.sendBasic(C2SPacketType$1.SET_ANGLE, dir);
+  api.sendBasic(C2SPacketType.SET_ANGLE, dir);
 }
 class AutoAim extends Module {
   constructor() {
     super("autoaim", Category.COMBAT, "automatically aims");
-    this.disableIfNone = this.addBool("disableifnone", true, "disables if there is a player nearby");
+    this.disableIfNone = this.addBool("disableifnone", true, "disables if there is not a player nearby");
     this.blockPackets = this.addBool("blockpackets", true, "blocks other direction packets");
     this.on("serverTick", () => {
       if (nearestEnemy == null) {
@@ -4375,7 +4312,7 @@ class AutoAim extends Module {
       setDir(angleToEnemy);
     });
     this.on("packetSend", (e) => {
-      if (e.type != C2SPacketType$1.SET_ANGLE)
+      if (e.type != C2SPacketType.SET_ANGLE)
         return;
       if (e.payload[0] != angleToEnemy)
         e.isCanceled = true;
@@ -4385,25 +4322,6 @@ class AutoAim extends Module {
     setDir(angleToEnemy);
   }
 }
-var WeaponIds = /* @__PURE__ */ ((WeaponIds2) => {
-  WeaponIds2[WeaponIds2["TOOL_HAMMER"] = 0] = "TOOL_HAMMER";
-  WeaponIds2[WeaponIds2["HAND_AXE"] = 1] = "HAND_AXE";
-  WeaponIds2[WeaponIds2["GREAT_AXE"] = 2] = "GREAT_AXE";
-  WeaponIds2[WeaponIds2["SHORT_SWORD"] = 3] = "SHORT_SWORD";
-  WeaponIds2[WeaponIds2["KATANA"] = 4] = "KATANA";
-  WeaponIds2[WeaponIds2["POLE_ARM"] = 5] = "POLE_ARM";
-  WeaponIds2[WeaponIds2["BAT"] = 6] = "BAT";
-  WeaponIds2[WeaponIds2["DAGGERS"] = 7] = "DAGGERS";
-  WeaponIds2[WeaponIds2["STICK"] = 8] = "STICK";
-  WeaponIds2[WeaponIds2["HUNTING_BOW"] = 9] = "HUNTING_BOW";
-  WeaponIds2[WeaponIds2["GREAT_HAMMER"] = 10] = "GREAT_HAMMER";
-  WeaponIds2[WeaponIds2["WOODEN_SHIELD"] = 11] = "WOODEN_SHIELD";
-  WeaponIds2[WeaponIds2["CROSSBOW"] = 12] = "CROSSBOW";
-  WeaponIds2[WeaponIds2["REPEATER_CROSSBOW"] = 13] = "REPEATER_CROSSBOW";
-  WeaponIds2[WeaponIds2["MC_GRABBY"] = 14] = "MC_GRABBY";
-  WeaponIds2[WeaponIds2["MUSKET"] = 15] = "MUSKET";
-  return WeaponIds2;
-})(WeaponIds || {});
 var lastDmgTime = getTime();
 var lastHealTime = getTime();
 var shameChance = 0;
@@ -4484,30 +4402,6 @@ class ClownNotify extends Module {
     });
   }
 }
-var AccessoryIds = /* @__PURE__ */ ((AccessoryIds2) => {
-  AccessoryIds2[AccessoryIds2["SNOWBALL"] = 12] = "SNOWBALL";
-  AccessoryIds2[AccessoryIds2["TREE_CAPE"] = 9] = "TREE_CAPE";
-  AccessoryIds2[AccessoryIds2["STONE_CAPE"] = 10] = "STONE_CAPE";
-  AccessoryIds2[AccessoryIds2["COOKIE_CAPE"] = 3] = "COOKIE_CAPE";
-  AccessoryIds2[AccessoryIds2["COW_CAPE"] = 8] = "COW_CAPE";
-  AccessoryIds2[AccessoryIds2["MONKEY_TAIL"] = 11] = "MONKEY_TAIL";
-  AccessoryIds2[AccessoryIds2["APPLE_BASKET"] = 17] = "APPLE_BASKET";
-  AccessoryIds2[AccessoryIds2["WINTER_CAPE"] = 6] = "WINTER_CAPE";
-  AccessoryIds2[AccessoryIds2["SKULL_CAPE"] = 4] = "SKULL_CAPE";
-  AccessoryIds2[AccessoryIds2["DASH_CAPE"] = 5] = "DASH_CAPE";
-  AccessoryIds2[AccessoryIds2["DRAGON_CAPE"] = 2] = "DRAGON_CAPE";
-  AccessoryIds2[AccessoryIds2["SUPER_CAPE"] = 1] = "SUPER_CAPE";
-  AccessoryIds2[AccessoryIds2["TROLL_CAPE"] = 7] = "TROLL_CAPE";
-  AccessoryIds2[AccessoryIds2["THORNS"] = 14] = "THORNS";
-  AccessoryIds2[AccessoryIds2["BLOCKADES"] = 15] = "BLOCKADES";
-  AccessoryIds2[AccessoryIds2["DEVILS_TAIL"] = 20] = "DEVILS_TAIL";
-  AccessoryIds2[AccessoryIds2["SAWBLADE"] = 16] = "SAWBLADE";
-  AccessoryIds2[AccessoryIds2["ANGEL_WINGS"] = 13] = "ANGEL_WINGS";
-  AccessoryIds2[AccessoryIds2["SHADOW_WINGS"] = 19] = "SHADOW_WINGS";
-  AccessoryIds2[AccessoryIds2["BLOOD_WINGS"] = 18] = "BLOOD_WINGS";
-  AccessoryIds2[AccessoryIds2["CORRUPT_X_WINGS"] = 21] = "CORRUPT_X_WINGS";
-  return AccessoryIds2;
-})(AccessoryIds || {});
 function hat(id) {
   if (gearSettingModule.buyHats.val)
     api.buyHat(id);
@@ -4520,7 +4414,7 @@ function acc(id) {
 }
 function attackingGear() {
   if (api.player.acc == AccessoryIds.MONKEY_TAIL) {
-    acc(0);
+    acc(AccessoryIds.NONE);
   }
   hat(HatIds.BULL_HELMET);
 }
@@ -4533,17 +4427,34 @@ function secondary() {
     return;
   api.setWeapon(type);
 }
-function lookAt(pos) {
-  api.sendBasic(C2SPacketType$1.SET_ANGLE, player.getAsPos().dirTo(pos));
+var lockingLook = false;
+var lockingDir;
+api.on("packetSend", (e) => {
+  if (e.type == C2SPacketType.SET_ANGLE && lockingLook) {
+    e.isCanceled = true;
+    api.sendHidden(C2SPacketType.SET_ANGLE, lockingDir);
+  }
+});
+function lookAt(pos, lock) {
+  look(player.dirTo(pos), lock);
+}
+function look(dir, lock) {
+  if (lock) {
+    lockingLook = true;
+    lockingDir = dir;
+  } else if (lock == false) {
+    lockingLook = false;
+  }
+  api.sendBasic(C2SPacketType.SET_ANGLE, dir);
 }
 var isAutoFire = false;
 api.on("packetReceive", (e) => {
-  if (e.type == S2CPacketType$1.DEATH) {
+  if (e.type == S2CPacketType.DEATH) {
     isAutoFire = false;
   }
 });
 api.on("packetSend", (e) => {
-  if (e.type == C2SPacketType$1.SET_ATTACK_STATE && e.payload[0]) {
+  if (e.type == C2SPacketType.SET_ATTACK_STATE && e.payload[0]) {
     isAutoFire = !isAutoFire;
   }
 });
@@ -4579,7 +4490,7 @@ class InstaModule extends Module {
     super("insta", Category.COMBAT, "insta kill noobs");
     this.spikePlaceCount = this.addEnum("spikePlaceCount", 0, SpikePlaceCount, "amount of spikes to place for the insta");
     this.on("packetReceive", (e) => {
-      if (e.type != S2CPacketType$1.UPDAE_PLAYERS)
+      if (e.type != S2CPacketType.UPDAE_PLAYERS)
         return;
       if (player.getSecondaryType() == null) {
         this.disable("no secondary!");
@@ -4598,7 +4509,7 @@ class InstaModule extends Module {
     });
   }
   onPostInit() {
-    autoAimModule = moduleManager.getModule("autoaim");
+    autoAimModule = moduleManager.getModule(AutoAim);
   }
   onEnable() {
     counter = 0;
@@ -4616,28 +4527,40 @@ class InstaModule extends Module {
     if (this.spikePlaceCount.val == 1) {
       placeSpike(angleToEnemy);
     } else if (this.spikePlaceCount.val == 2) {
-      placeSpike(angleToEnemy - 45);
-      placeSpike(angleToEnemy + 45);
+      placeSpike(angleToEnemy - toRad_1(45));
+      placeSpike(angleToEnemy + toRad_1(45));
     }
   }
 }
+var inTrap = false;
+var inTrapLastTick = false;
 class TrapNuker extends Module {
   constructor() {
     super("trapnuker", Category.COMBAT, "Breaks traps that you're in");
     this.on("serverTick", () => {
       for (const obj of api.gameObjects) {
         if (obj.buildType == ItemIds.PIT_TRAP && obj.dist(player) <= 95) {
-          lookAt(obj);
+          lookAt(obj, true);
+          inTrap = true;
           if (!isAutoFire) {
             toggleAuto();
           }
+          break;
         }
       }
+      if (!inTrap && inTrapLastTick) {
+        if (isAutoFire) {
+          toggleAuto();
+          look(mouseDir, false);
+        }
+      }
+      inTrapLastTick = inTrap;
     });
   }
   onDisable() {
     if (isAutoFire) {
       toggleAuto();
+      look(mouseDir, false);
     }
   }
 }
@@ -4704,7 +4627,7 @@ var killTime;
 class AutoEz extends Module {
   constructor() {
     super("autoez", Category.CHAT, "Automatically insult players after death");
-    this.msg = this.addString("message", "ez %PLAYER%", "the message to send after killing a player", 0, 30);
+    this.msg = this.addString("message", "get justclient %PLAYER%", "the message to send after killing a player", 0, 30);
     this.onJust("playerExitRange", (e) => {
       if (getTime() - killTime >= 500)
         return;
@@ -4712,7 +4635,7 @@ class AutoEz extends Module {
       api.chat(formatString(this.msg.val));
     });
     this.on("packetReceive", (e) => {
-      if (e.type == S2CPacketType$1.UPDATE_MATS && e.payload[0] == "kills")
+      if (e.type == S2CPacketType.UPDATE_MATS && e.payload[0] == "kills")
         killTime = getTime();
     });
   }
@@ -4720,7 +4643,7 @@ class AutoEz extends Module {
 class DebugModule extends Module {
   constructor() {
     super("debug", Category.MISC, "a module for debugging");
-    this.addBool("bool setting", false, "bool setting defaulting to false");
+    const tmpBool = this.addBool("bool setting", false, "bool setting defaulting to false");
     this.addNum("num setting", 5, 1, 10, "num setting defaulting to 5 with a minimum of 1 and max of 10");
     this.addBind("bind setting", "a bind setting with no defaults");
     this.addHat("hat setting", HatIds.SHAME, "hat setting defaulting to the shame hat");
@@ -4732,6 +4655,7 @@ class DebugModule extends Module {
       AnEnum2[AnEnum2["ENUMVAL3"] = 2] = "ENUMVAL3";
     })(AnEnum || (AnEnum = {}));
     this.addEnum("enum setting", 0, AnEnum, "an enum setting");
+    this.addBool("bool settingr", false, "bool setting that requires first bool setting to be false").requires(tmpBool, false);
   }
 }
 class PacketLogger extends Module {
@@ -4741,32 +4665,17 @@ class PacketLogger extends Module {
     this.sendingPackets = this.addBool("sending", true, "logs packets if sent out to server");
     this.receiveingPackets = this.addBool("receiving", true, "logs packets sent from server to client");
     this.on("packetSend", (e) => {
-      this.info("sending packet " + JSON.stringify(e.packet));
-      console.log(e.packet);
+      if (!this.consoleOnly.val) {
+        this.info("sending packet " + JSON.stringify(e.packet), true);
+      } else
+        console.log(e.packet);
     });
     this.on("packetReceive", (e) => {
-      this.info("receiving packet " + JSON.stringify(e.packet));
-      console.log(e.packet);
+      if (!this.consoleOnly.val) {
+        this.info("receiving packet " + JSON.stringify(e.packet), true);
+      } else
+        console.log(e.packet);
     });
-  }
-}
-class Repeater {
-  constructor(cb, msInterval, code) {
-    this.cb = cb;
-    this.msInterval = msInterval;
-    this.code = code;
-    this.intervalId = null;
-  }
-  start(code) {
-    if (this.code != code || this.intervalId != null)
-      return;
-    this.intervalId = setInterval(this.cb, this.msInterval);
-  }
-  stop(keyCode) {
-    if (this.code != keyCode || this.intervalId == null)
-      return;
-    clearInterval(this.intervalId);
-    this.intervalId = null;
   }
 }
 class PlacementModule extends Module {
@@ -4845,7 +4754,7 @@ class Nuker extends Module {
     });
   }
 }
-var style = ".notifDiv{position:absolute;right:-100px;width:fit-content;height:fit-content;background-color:#4b4b4b79;border-radius:5px;transition-duration:.65s;z-index:10}.guiHolder{top:0px;left:0px;width:100%;position:absolute;height:100%;background-color:#7c7c7c48;display:none}.catDiv{position:absolute;width:fit-content;height:fit-content;background-color:#1f1f1f;padding:6px;display:grid;place-items:center;color:#8ac0f0d7}.moduleDiv{display:block;width:fit-content;height:fit-content;padding:3px;background-color:#1f1f1f;transition-duration:.5s}.moduleDiv:hover{background-color:#3354c4}.invisHolder{display:grid;place-items:center;position:absolute;width:100%;height:100%}.dispGui{display:block;width:45%;height:70%;background-color:#103a94a2;overflow-y:hidden}.settingDiv{width:100%;height:fit-content;position:relative;display:grid;place-content:center;margin-bottom:4px;box-sizing:border-box}.settingContent{display:inline-block;width:fit-content}.moduleEnabled{background-color:#648edbea}.errorDiv{background-color:#740d0da8}.commandDiv{display:block;width:100%;height:fit-content;text-align:center;padding:5px;border:2px solid rgba(1,26,54,.26)}.helpDiv{display:block;width:50%;height:50%;background-color:#103a94a2;border-radius:8px}.commandDivName{width:100%;height:fit-content;text-align:center}.settingContent[type=color]{width:30px}\n";
+var style = ".notifDiv{position:absolute;right:-100px;width:fit-content;height:fit-content;background-color:#4b4b4b79;border-radius:5px;transition-duration:.65s;z-index:10}.guiHolder{top:0px;left:0px;width:100%;position:absolute;height:100%;background-color:#7c7c7c48;display:none}.catDiv{position:absolute;width:fit-content;height:fit-content;background-color:#1f1f1f;padding:6px;display:grid;place-items:center;color:#8ac0f0d7}.moduleDiv{display:block;width:fit-content;height:fit-content;padding:3px;background-color:#1f1f1f;transition-duration:.5s}.moduleDiv:hover{background-color:#3354c4}.invisHolder{display:grid;place-items:center;position:absolute;width:100%;height:100%}.dispGui{display:block;width:45%;height:70%;background-color:#103a94a2;overflow-y:hidden}.settingDiv{width:100%;height:fit-content;position:relative;display:grid;place-content:center;margin-bottom:4px;box-sizing:border-box}.settingContent{display:inline-block;width:fit-content}.moduleEnabled{background-color:#648edbea}.errorDiv{background-color:#740d0da8}.commandDiv{display:block;width:100%;height:fit-content;text-align:center;padding:5px;border:2px solid rgba(1,26,54,.26)}.helpDiv{display:block;width:50%;height:50%;background-color:#103a94a2;border-radius:8px}.commandDivName{width:100%;height:fit-content;text-align:center}.settingContent[type=color]{width:30px}.setTitle{font-size:large}\n";
 function initStyle() {
   const styleElm = document.createElement("style");
   styleElm.setAttribute("type", "text/css");
@@ -4868,7 +4777,7 @@ const curseWords = JSON.parse(atob("WyJjdW50Iiwid2hvcmUiLCJmdWNrIiwic2hpdCIsImZh
 class CurseBypass extends Module {
   constructor() {
     super("cursebypass", Category.CHAT, "bypasses the curse filter");
-    onSendPack(C2SPacketType$1.CHAT, (e) => {
+    onSendPack(C2SPacketType.CHAT, (e) => {
       var msg = e.payload[0];
       var foundCurse = false;
       curseWords.forEach((curse) => {
@@ -4879,7 +4788,7 @@ class CurseBypass extends Module {
       });
       if (foundCurse) {
         e.isCanceled = true;
-        api.sendHidden(C2SPacketType$1.CHAT, msg);
+        api.sendHidden(C2SPacketType.CHAT, msg);
       }
     }, this);
   }
@@ -4894,7 +4803,7 @@ class ChatMirror extends Module {
   constructor() {
     super("chatmirror", Category.CHAT, "mirrors player's chat messages");
     this.copyPlayers = this.addEnum("playersel", 2, Copy, "select which players to mirror");
-    onRecPack(S2CPacketType$1.CHAT, (e) => {
+    onRecPack(S2CPacketType.CHAT, (e) => {
       const sid = e.payload[0];
       if (sid == player.sid) {
         return;
@@ -4913,14 +4822,19 @@ class ChatMirror extends Module {
 class SpeedGear extends Module {
   constructor() {
     super("speedgear", Category.GEAR, "Equips the fastest gear");
+    this.deEquipHat = this.addBool("deequiphat", true, "deequips your current hat");
   }
   onEnable() {
+    if (this.deEquipHat.val)
+      hat(HatIds.NONE);
     if (player.y < 2400) {
+      console.log("winter");
       hat(HatIds.WINTER_CAP);
     } else if (player.y > 6850 && player.y < 7550) {
+      console.log("flip");
       hat(HatIds.FLIPPER_HAT);
     } else {
-      hat(0);
+      console.log("boost");
       hat(HatIds.BOOSTER_HAT);
     }
     acc(AccessoryIds.MONKEY_TAIL);
@@ -4989,6 +4903,7 @@ class BoostSpike extends Module {
     this.aimMode = this.addEnum("aimmode", 1, AimMode, "What direction to bostspike in");
     this.spikeMode = this.addEnum("spikemode", 0, SpikeMode, "When to place spikes");
     this.spikeDist = this.addNum("spikedist", 300, 200, 1e3, "Distance to start place spikes");
+    this.defaultToggle();
     this.interval(0, () => {
       const targetDir = this.aimMode.val == 0 || nearestEnemy == null ? mouseDir : player.dirTo(nearestEnemy);
       placePad(targetDir);
@@ -5004,7 +4919,103 @@ class BoostSpike extends Module {
     }
   }
 }
+class ChatTime extends Module {
+  constructor() {
+    super("chattime", Category.CHAT, "allows your chat messages to stay longer");
+    this.time = this.addNum("time", 1e3, 600, 1e4, "amount of extra time for your messages to stay");
+    var curInt = null;
+    const msgQueue = [];
+    onSendPack(C2SPacketType.CHAT, (e) => {
+      msgQueue.push(e.payload[0]);
+      if (curInt == null) {
+        var timeCur = this.time.val;
+        curInt = setInterval(() => {
+          api.sendHidden(C2SPacketType.CHAT, msgQueue[0]);
+          timeCur -= this.time.minVal;
+          if (timeCur <= 0) {
+            msgQueue.shift();
+          }
+          if (!msgQueue.length) {
+            clearInterval(curInt);
+            curInt = null;
+          }
+        }, this.time.minVal);
+      }
+    }, this);
+  }
+}
+class AntiAim extends Module {
+  constructor() {
+    super("antiaim", Category.MISC, "makes you look wierd");
+    this.hit360 = this.addBool("360hit", false, "sends Number.MAX_VALUE as your direction");
+    onSendPack(C2SPacketType.SET_ANGLE, (e) => {
+      e.isCanceled = true;
+      api.sendHidden(C2SPacketType.SET_ANGLE, this.getDirection());
+    }, this);
+  }
+  getDirection() {
+    if (this.hit360.val) {
+      return Number.MAX_VALUE;
+    } else
+      return null;
+  }
+  onEnable() {
+    api.sendHidden(C2SPacketType.SET_ANGLE, this.getDirection());
+  }
+}
+class NoPrompt extends Module {
+  constructor() {
+    super("noprompt", Category.MISC, "removes moomoo.io's dumb prompt before close");
+  }
+  onEnable() {
+    onbeforeunload = null;
+  }
+  onDisable() {
+    onbeforeunload = () => "I hate this game";
+  }
+}
+class NoCookie extends Module {
+  constructor() {
+    super("nocookie", Category.MISC, "hides moomoo.io's cookie display");
+  }
+  onEnable() {
+    var _a;
+    (_a = document.getElementById("onetrust-consent-sdk")) == null ? void 0 : _a.remove();
+  }
+}
+class ClickGear extends Module {
+  constructor() {
+    super("clickgear", Category.GEAR, "equips gear when you click");
+    this.downHatL = this.addHat("downhatleft", HatIds.BULL_HELMET, "the hat to equip when you left click");
+    this.downAccL = this.addAcc("downaccleft", AccessoryIds.CORRUPT_X_WINGS, "the accessory to equip when you left click");
+    this.upHatL = this.addHat("uphatleft", HatIds.SPIKE_GEAR, "the hat to equip when you release left click");
+    this.upAccL = this.addAcc("upaccleft", AccessoryIds.CORRUPT_X_WINGS, "the accessory to equip when you release left click");
+    this.downHatR = this.addHat("downhatright", HatIds.TANK_GEAR, "the hat to equip when you right click");
+    this.downAccR = this.addAcc("downaccright", AccessoryIds.CORRUPT_X_WINGS, "the accessory to equip when you right click");
+    this.upHatR = this.addHat("uphatright", HatIds.SOLDIER_HELMET, "the hat to equip when you release right click");
+    this.upAccR = this.addAcc("upaccright", AccessoryIds.CORRUPT_X_WINGS, "the accessory to equip when you release right click");
+    canvas.addEventListener("mousedown", (e) => {
+      if (e.button == 0) {
+        hat(this.downHatL.val);
+        acc(this.downAccL.val);
+      } else if (e.button == 1) {
+        hat(this.downHatR.val);
+        acc(this.downAccR.val);
+      }
+    });
+    canvas.addEventListener("mouseup", (e) => {
+      if (e.button == 0) {
+        hat(this.upHatL.val);
+        acc(this.upAccL.val);
+      } else if (e.button == 1) {
+        hat(this.upHatR.val);
+        acc(this.upAccR.val);
+      }
+    });
+  }
+}
 console.log("jusclient init...");
+const clientVersion = "0.0.0";
 const startTime = Date.now();
 addMod(AutoHeal);
 addMod(GuiModule);
@@ -5031,9 +5042,15 @@ addMod(ChatMirror);
 addMod(SpeedGear);
 addMod(GearSettings);
 addMod(BoostSpike);
+addMod(ChatTime);
+addMod(AntiAim);
+addMod(NoPrompt);
+addMod(NoCookie);
+addMod(ClickGear);
 moduleManager.init();
 initStorage();
 initStyle();
 addCommand(HelpCommand);
 addCommand(UpgradeCommand);
-console.log("justclient init finished in", Date.now() - startTime, "ms");
+console.log("justclient init finished in", Date.now() - startTime, "ms", clientVersion);
+console.log("justclient registered", moduleManager.modules.length, "total modules, and", commands.length, "commands");

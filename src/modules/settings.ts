@@ -1,7 +1,5 @@
-import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
-import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
-import { C2SPacketType, S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
-import { EventEmitter } from "@mathrandom7910/tseventemitter";
+import { AccessoryIds, C2SPacketType, HatIds, S2CPacketType } from "@mathrandom7910/moomooapi";
+import EventEmitter from "@mathrandom7910/tseventemitter";
 import { Color } from "../utils/miscutils";
 import { Module } from "./module";
 
@@ -9,9 +7,15 @@ interface SettingEvents<T> {
     change: T
 }
 
+interface ReqSet<K> {
+    otherSetting: Setting<K>,
+    toBeVal: K
+}
+
 export abstract class Setting<T> extends EventEmitter<SettingEvents<T>> {
     val: T;
     settingCategory: string | null = null;
+    req: ReqSet<any> | null = null;
     constructor(public name: string, public defaultVal: T, public desc = "", public module: Module) {
         super();
         this.val = defaultVal;
@@ -41,6 +45,14 @@ export abstract class Setting<T> extends EventEmitter<SettingEvents<T>> {
 
     asStr(): string {
         return (this.val as any).toString();
+    }
+
+    requires<K>(setting: Setting<K>, requireVal: K) {
+        this.req = {
+            otherSetting: setting,
+            toBeVal: requireVal
+        }
+        return this;
     }
 }
 
@@ -105,6 +117,7 @@ export class EnumSetting<T> extends Setting<T> {
     }
 }
 
+
 export class HatSetting extends EnumSetting<HatIds> {
     constructor(name: string, defaultVal: HatIds, module: Module, desc = "") {
         super(name, defaultVal, HatIds, module, desc);
@@ -161,6 +174,12 @@ export class ColorSetting extends Setting<Color> {
         return this.val.toHex();
     }
 }
+
+// export class MultSetting extends Setting<string> {
+//     constructor(name: string, defVal: string) {
+//         super(name, defVal, )
+//     }
+// }
 
 export class C2SPacketSetting extends EnumSetting<C2SPacketType> {
     constructor(name: string, defaultVal: C2SPacketType, module: Module, desc = "") {

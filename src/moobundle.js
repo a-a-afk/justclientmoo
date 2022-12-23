@@ -1,3 +1,4 @@
+export const expVar = "";
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

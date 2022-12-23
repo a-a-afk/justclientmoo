@@ -9,13 +9,15 @@ export class PacketLogger extends Module {
         super("packetlogger", Category.MISC, "logs packets");
 
         this.on("packetSend", (e) => {
-            this.info("sending packet " + JSON.stringify(e.packet));
-            console.log(e.packet);
+            if(!this.consoleOnly.val) {
+                this.info("sending packet " + JSON.stringify(e.packet), true);
+            } else console.log(e.packet);
         });
 
         this.on("packetReceive", (e) => {
-            this.info("receiving packet " + JSON.stringify(e.packet));
-            console.log(e.packet);
+            if(!this.consoleOnly.val) {
+                this.info("receiving packet " + JSON.stringify(e.packet), true);
+            } else console.log(e.packet);
         });
     }
 }

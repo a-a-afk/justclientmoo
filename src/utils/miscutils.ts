@@ -1,4 +1,4 @@
-import { GameObject } from "@mathrandom7910/moomooapi/src/gameobject";
+import { GameObject } from "@mathrandom7910/moomooapi";
 import { Pos } from "@mathrandom7910/pos";
 import { addNotif } from "../notifications";
 
@@ -48,11 +48,15 @@ export function buildingToPos(building: GameObject) {
 }
 
 export class ErInf {
-    info(notif: string) {
-        addNotif(notif);
+    info(notif: string, noChat?: boolean) {
+        addNotif(notif, false, noChat);
     }
 
     error(notif: string) {
         addNotif(notif, true);
     }
+}
+
+export enum EnumNone {
+    NONE = "NONE"
 }

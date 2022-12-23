@@ -1,5 +1,4 @@
-import { C2SPacketType, S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
-import { PacketReceiveEvent, PacketSendEvent } from "@mathrandom7910/moomooapi/src/events";
+import { C2SPacketType, PacketSendEvent, S2CPacketType, PacketReceiveEvent } from "@mathrandom7910/moomooapi";
 import { Module } from "../modules/module";
 
 export function onSendPack(packetType: C2SPacketType, cb: (e: PacketSendEvent) => void, module: Module) {

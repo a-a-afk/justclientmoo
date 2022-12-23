@@ -1,5 +1,5 @@
 
-import { WeaponIds } from "@mathrandom7910/moomooapi/src/data/objects/weapons";
+import { WeaponIds } from "@mathrandom7910/moomooapi";
 import { nearestEnemy, player } from "../../../instances";
 import { getTime } from "../../../utils/miscutils";
 import { heal, healUp, healWithDelay } from "../../../utils/placeutils";

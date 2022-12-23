@@ -1,5 +1,5 @@
 import { UpgradeCommand } from "./commands/command";
-import { addCommand, addMod, moduleManager } from "./instances";
+import { addCommand, addMod, commands, moduleManager } from "./instances";
 import { ClientModule } from "./modules/modules/client/clientmodule";
 import { GuiModule } from "./modules/modules/client/guimodule/GuiModule";
 import { NotificationModule } from "./modules/modules/client/notificationmodule";
@@ -24,8 +24,16 @@ import { SpeedGear } from "./modules/modules/gear/speedgear";
 import { GearSettings } from "./modules/modules/gear/gearsettings";
 import { HelpCommand } from "./commands/helpcommand";
 import { BoostSpike } from "./modules/modules/combat/boostspiker";
+// import { ExtraChat } from "./modules/modules/chat/extrachat";
+import { ChatTime } from "./modules/modules/chat/chattime";
+import { AntiAim } from "./modules/modules/misc/AntiAim";
+import { NoPrompt } from "./modules/modules/misc/noprompt";
+import { NoCookie } from "./modules/modules/misc/NoCookie";
+import { ClickGear } from "./modules/modules/gear/clickgear";
 
 console.log("jusclient init...");
+
+const clientVersion = "0.0.0";
 
 const startTime = Date.now();
 addMod(AutoHeal);
@@ -53,6 +61,13 @@ addMod(ChatMirror);
 addMod(SpeedGear);
 addMod(GearSettings);
 addMod(BoostSpike);
+addMod(ChatTime);
+// addMod(ExtraChat);
+addMod(AntiAim);
+addMod(NoPrompt);
+addMod(NoCookie);
+addMod(ClickGear);
+
 // addMod(AntiTrap);
 moduleManager.init();
 initStorage();
@@ -61,5 +76,6 @@ initStyle();
 addCommand(HelpCommand);
 addCommand(UpgradeCommand);
 
-console.log("justclient init finished in", Date.now() - startTime, "ms");
+console.log("justclient init finished in", Date.now() - startTime, "ms", clientVersion);
+console.log("justclient registered", moduleManager.modules.length, "total modules, and", commands.length, "commands");
 

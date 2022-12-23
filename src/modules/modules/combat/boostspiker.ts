@@ -1,5 +1,5 @@
 import { toRad } from "@mathrandom7910/mathplus";
-import { ItemIds } from "@mathrandom7910/moomooapi/src/data/objects/items";
+import { ItemIds } from "@mathrandom7910/moomooapi";
 import { nearestEnemy, player } from "../../../instances";
 import { mouseDir } from "../../../utils/elementutils";
 import { placePad, placeSpike } from "../../../utils/placeutils";
@@ -21,6 +21,8 @@ export class BoostSpike extends Module {
     spikeDist = this.addNum("spikedist", 300, 200, 1000, "Distance to start place spikes");
     constructor() {
         super("boostspike", Category.COMBAT, "rapidly places boost pads and spikes");
+
+        this.defaultToggle();
 
         this.interval(0, () => {
             const targetDir = this.aimMode.val == AimMode.MOUSE || nearestEnemy == null ? mouseDir : player.dirTo(nearestEnemy);

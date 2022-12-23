@@ -1,5 +1,5 @@
 import { toRad } from "@mathrandom7910/mathplus";
-import { Repeater } from "@mathrandom7910/moomooapi/src/misc";
+import { Repeater } from "@mathrandom7910/moomooapi";
 import { addRepeater, api, player } from "../../../instances";
 import { mouseDir } from "../../../utils/elementutils";
 import { Category, Module } from "../../module";

@@ -1,6 +1,6 @@
-import { C2SPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
+import { C2SPacketType } from "@mathrandom7910/moomooapi";
 import { api, moduleManager } from "../instances"
-import { setDat, setStorage, storageDat } from "../storage";
+import { Config, setStorage, storageDat } from "../storage";
 import { ErInf } from "../utils/miscutils";
 
 export var commandPrefix = "!";
@@ -111,7 +111,7 @@ export class ConfigCommand extends Command {
             return false;
         }
         if(args[0] == "export") {
-            prompt("Config: ", JSON.stringify(storageDat));
+            prompt("Config: ", JSON.stringify(storageDat.curConfig));
             return true;
         } else if(args[0] == "import") {
             const cfgStr = prompt("Config: ");
@@ -125,12 +125,14 @@ export class ConfigCommand extends Command {
             }
 
             try {
-                const dat = JSON.parse(cfgStr);
+                const dat = JSON.parse(cfgStr) as Config;
                 if(!dat) {
                     this.info("Invalid config given");
                     return false;
                 }
-                setDat(dat);
+                
+                storageDat.otherConfigs.push(storageDat.curConfig);
+                storageDat.curConfig = dat;
                 setStorage();
                 this.info("Config imported");
                 return true;

@@ -11,6 +11,11 @@ export interface MenuPosDat {
 }
 
 export interface Config {
+    info: {
+        name: string,
+        author: string,
+        desc: string
+    },
     modules: ModuleData[],
     menuPos: Record<number, MenuPosDat>
 }
@@ -18,8 +23,14 @@ export interface Config {
 export const defaultDat: StorageData = {
     curConfig: {
         modules: [],
-        menuPos: {}
+        menuPos: {},
+        info: {
+            name: "Default Config",
+            author: "Default Author",
+            desc: "Default Description"
+        }
     },
+    otherConfigs: [],
     version: "0.0.0",
     isDev: true
 }
@@ -42,6 +53,7 @@ export interface ConfigData {
 
 export interface StorageData {
     curConfig: Config,
+    otherConfigs: Config[]
     version: string,
     isDev: boolean
 }

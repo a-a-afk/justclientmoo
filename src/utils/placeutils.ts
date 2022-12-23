@@ -1,5 +1,5 @@
 // import { itemList } from "@mathrandom7910/moomooapi/src/data/objects/items";
-import { ItemIds } from "@mathrandom7910/moomooapi/src/data/objects/items";
+import { ItemIds } from "@mathrandom7910/moomooapi";
 import { api, player } from "../instances";
 import { getFoodType } from "./itemutils";
 

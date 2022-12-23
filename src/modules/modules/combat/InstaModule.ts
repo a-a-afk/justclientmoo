@@ -1,6 +1,5 @@
-import { AccessoryIds } from "@mathrandom7910/moomooapi/src/data/gear/accessories";
-import { HatIds } from "@mathrandom7910/moomooapi/src/data/gear/hats";
-import { S2CPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
+import { toRad } from "@mathrandom7910/mathplus";
+import { HatIds, AccessoryIds, S2CPacketType } from "@mathrandom7910/moomooapi";
 import { api, moduleManager, player } from "../../../instances";
 import { placeSpike } from "../../../utils/placeutils";
 import { acc, attackingGear, hat, primary, secondary } from "../../../utils/player";
@@ -63,7 +62,7 @@ export class InstaModule extends Module {
     }
 
     onPostInit(): void {
-        autoAimModule = moduleManager.getModule("autoaim") as AutoAim;
+        autoAimModule = moduleManager.getModule(AutoAim);
     }
 
     onEnable(): void {
@@ -90,8 +89,8 @@ export class InstaModule extends Module {
         if(this.spikePlaceCount.val == SpikePlaceCount.ONE) {
             placeSpike(angleToEnemy);
         } else if(this.spikePlaceCount.val == SpikePlaceCount.TWO) {
-            placeSpike(angleToEnemy - 45);
-            placeSpike(angleToEnemy + 45);
+            placeSpike(angleToEnemy - toRad(45));
+            placeSpike(angleToEnemy + toRad(45));
         }
     }
 }

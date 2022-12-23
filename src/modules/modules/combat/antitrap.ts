@@ -1,5 +1,5 @@
 import { getDistance, toRad } from "@mathrandom7910/mathplus";
-import { ItemIds } from "@mathrandom7910/moomooapi/src/data/objects/items";
+import { ItemIds } from "@mathrandom7910/moomooapi";
 import { api, player } from "../../../instances";
 import { buildingToPos } from "../../../utils/miscutils";
 import { place } from "../../../utils/placeutils";

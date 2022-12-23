@@ -1,5 +1,5 @@
 import { getAngle } from "@mathrandom7910/mathplus";
-import { C2SPacketType } from "@mathrandom7910/moomooapi/src/data/network/packets";
+import { C2SPacketType } from "@mathrandom7910/moomooapi";
 import { api, nearestEnemy, player } from "../../../instances";
 import { Category, Module } from "../../module";
 
@@ -10,7 +10,7 @@ function setDir(dir: number) {
 }
 
 export class AutoAim extends Module {
-    disableIfNone = this.addBool("disableifnone", true, "disables if there is a player nearby");
+    disableIfNone = this.addBool("disableifnone", true, "disables if there is not a player nearby");
     blockPackets = this.addBool("blockpackets", true, "blocks other direction packets");
 
     constructor() {

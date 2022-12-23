@@ -1,4 +1,4 @@
-import { GameObject } from "@mathrandom7910/moomooapi/src/gameobject";
+import { GameObject } from "@mathrandom7910/moomooapi";
 import { api, player } from "../../../instances";
 import { isAutoFire, lookAt, toggleAuto } from "../../../utils/player";
 import { Category, Module } from "../../module";
