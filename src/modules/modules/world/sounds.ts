@@ -1,10 +1,10 @@
-import { Pos } from "@mathrandom7910/pos";
+// import { Pos } from "@mathrandom7910/pos";
 import { Category, Module } from "../../module";
 
-interface Sound {
-    pos: Pos,
+// interface Sound {
+//     pos: Pos,
 
-}
+// }
 
 export class SoundModule extends Module {
     constructor() {
@@ -12,7 +12,7 @@ export class SoundModule extends Module {
 
 
         this.on("packetReceive", (e) => {
-            switch()
+            // switch()
         });
     }
 }
