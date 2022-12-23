@@ -11,7 +11,7 @@ export class SoundModule extends Module {
         super("sounds", Category.WORLD, "adds sounds to this bad game");
 
 
-        this.on("packetReceive", (e) => {
+        this.on("packetReceive", (_e) => {
             // switch()
         });
     }
